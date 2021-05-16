@@ -1,0 +1,457 @@
+¿Acepta?
+¿Acepta las condiciones anteriores
+Acerca de
+¿Activar?
+Activar acceso remoto
+Activar baliza
+Activar esta opción Solo para equipos MOTOROLA
+Activar Crosslinks
+Activar entorno grafico
+Activar este Hotspot
+Activar HBLINK
+Activar Hotspot
+Activar reconexión automática
+Activar servidor DNS
+Activar baliza cada X minutos
+Activar/Desactivar DVSWITCH
+Activar/Desactivar entorno grafico
+Activar/Desactivar HBLINK
+Actualiza redes
+Actualización disponibles Quieres actualizar DVLINK ahora
+Actualizar Base de datos ID_CALL
+Actualizar DVLINK
+Actualizar listados de reflectores
+Actualizar Raspbian
+Advertencia
+Al activar esta opción el menú se quedara con unas opciones mínimas
+AMBE Emulado
+Añadir HOTSPOT
+Añadir usuario
+Aplicando nuevas configuraciones....
+Aplicar cambios a HOTSPOT
+Aplicar configuraciones
+Aplique configuración para regenerar fichero
+¿Arrancar el reflector al iniciar?
+Avanzado
+Backup terminado correctamente. Ahora tienes que aplicar todas las configuraciones de DVSWITCH y HBLINK
+Borrado terminado
+Borrando configuraciones anteriores...
+Borrar
+Borrar conexiones
+Borrar Hotspot
+Borrar Master
+Borrar OPENBRIDGE
+Borrar PEER
+Borrar Regla
+Borrar usuario de DVSWITCH
+Borrar XLX-PEER
+Brillo en reposo
+Cambiar ganancia audio RX
+Cambiar ganancia audio TX
+Cambiar idioma
+Cambiar servidor aprs
+Cambio de red
+Campos info
+Cargando datos....
+Color
+Con otro MASTER
+Con un OPENBRIDGE
+Con un PEER
+Con un XLX-PEER
+Condiciones no aceptadas. No se generara un usuario usando emulación
+Conectado correctamente
+Conectar a WiFi abierta  Root 
+Conectar a WiFi con SSID WPA oculto  Root 
+Conectar a WiFi WEP  Root 
+Conectar a WiFi WPA   Root 
+Conectar a WIFI WPA con IP estática  Root 
+Conectar con
+Configuración de HOTSPOT
+Configuración de Red
+Configuración del modem
+Configuración DSTAR
+Configuración DVSwitch
+Configuración MODO EXPERTO
+Configuración NO aplicada
+Configuración personal
+Configurando...
+Configurar aprs
+Configurar CW
+Configurar DMR Gateway Cuatro conexiones
+Configurar DMR simplificado Una conexión
+Configurar DSTAR
+Configurar Duckdns
+Configurar FUSION
+Configurar NXDN
+Configurar P25
+Configurar pantalla
+Configurar WIFI
+Congelar DVLINK
+Contraseña
+Contraseña acceso remoto
+Contraseña aprs
+Contraseña errónea. Contacte con el dueño de DVLINK
+Contraseña establecida a  
+Contraseña no establecida. Quieres establecer una ahora?
+Contraseña red WiFi
+Copias de seguridad
+Correctamente conectado a $wifiSSID.
+Correo de Backup DVLINK enviado correctamente
+Creación de Peer
+Creación de reglas
+Creación Master
+Creación OPENBRIDGE
+Creación de XLX-PEER
+Creando perfil secundario
+Creando usuario, por favor espere...
+Crear conexiones
+Crear nuevo HOTSPOT
+Da tu opinión y participa
+¿Desactivar?
+DESACTIVAR CROSSLINKS
+Desactivar DVSWITCH
+Desactivar entorno grafico?
+Desactivar HBLINK
+Desactivar Hotspot
+¿Desconexión?
+Descongelar DVLINK
+Describe el error
+Descripción
+Descripción aprs
+Dirección TGIF
+Direccionamiento DINAMICO
+Direccionamiento ESTATICO
+DMR SIMPLIFICADO
+Dominio
+Duración baliza
+DVLINK congelado correctamente
+DVLINK descongelado correctamente
+DVSWITCH esta activado. Quiere desactivar DVSWITCH?
+DVSWITCH esta desactivado. Quiere activar DVSWITCH?
+Editar conexiones
+Editar MASTER
+Editar OPENBRIDGE
+Editar PEER
+Editar XLX-PEER
+El apartado [General] NO ES MODIFICABLE!. Este apartado lo configura DVLINK. Es el único apartado no modificable. En caso de modificación experta del apartado [General]  puede afectar al funcionamiento general de DVLINK y DVLINK tratara de reescribirlo cuando se reactive el Hotspot
+El Hotspot $NOMBRE ya existe. Introduce otro nombre para el Hotspot
+El indicativo no puede estar vacio
+El indicativo solo es modificable en el usuario principal. Si quieres cambiar de indicativo, borre el usuario y añade uno nuevo.
+El TGIDMASTER $TGIDMASTER se usa en reglas anteriores. Esta configuración realizaría un puente entre sistemas. No se realizara
+El usuario ya está disponible para su uso
+Entorno grafico desactivado. Desea activar el entorno grafico?
+Enviando correo...
+Envíanos tu opinión a través del siguiente formulario Telegram o únete al grupo en https://t.me/joinchat/AveYRFJCxSbhKbI2ti1_Og
+¿Enviar?
+Enviar mensaje
+Error 0Xb1. Contacte vía mail con soportedvlink@gmail.com indicando  Código de error. El sistema se reiniciara en 2 minutos
+Escribe TG ID MASTER
+Escriba mensaje
+Escribe cuantos PEERS podrán conectar al nuevo MASTER
+Escribe DMRID + 2 DIGITOS
+Escribe el DMRID del nuevo usuario
+Escribe el indicativo del nuevo HOTSPOT
+Escribe el indicativo del nuevo usuario
+Escribe el NETWORK ID
+Escribe el nombre de la nueva regla. No se permiten caracteres especiales
+Escribe el nombre del nuevo HOTSPOT
+Escribe el nombre del nuevo MASTER. No se permiten caracteres especiales
+Escribe el nombre del nuevo OPENBRIDGE. No se admiten caracteres especiales
+Escribe el nombre del nuevo PEER
+Escribe el nombre del nuevo XLX-PEER. No se admiten caracteres especiales
+Escribe el nombre del puerto
+Escribe el Numero del Módulo XLX a Conectar. P.Ejemplo 4001
+Escribe el puerto local del nuevo OPENBRIDGE
+Escribe el puerto local del nuevo PEER
+Escribe el puerto local del nuevo XLX-PEER
+Escribe el puerto remoto del nuevo OPENBRIDGE
+Escribe el puerto remoto del nuevo PEER
+Escribe el puerto remoto del nuevo XLX-PEER. Normalmente 62030
+Escribe el reflector de inicio solo en caso de DMR+. En caso contrario dejar en blanco
+Escribe el tiempo de desconexión en minutos
+Escribe el tiempo para CW
+Escribe el tiempo para la desconexión en minutos
+Escribe en que TS trabajara el MASTER
+Escribe en que TS trabajara la conexión. Normalmente 2
+Escribe indicativo
+Escribe IP o cadena conexión
+Escribe la contraseña de la red WiFi:
+Escribe la contraseña del nuevo MASTER
+Escribe la contraseña del nuevo OPENBRIDGE
+Escribe la contraseña del nuevo PEER
+Escribe la contraseña del nuevo XLX-PEER. Normalmente passw0rd
+Escribe la IP REMOTA del nuevo OPENBRIDGE
+Escribe la IP REMOTA del nuevo PEER
+Escribe la IP REMOTA del nuevo XLX-PEER
+Escribe nextionclock
+Escribe nivel de brillo reposo
+Escribe nuevo valor
+Escribe nuevo valor. No se permiten caracteres especiales
+Escribe opciones adicionales de conexión si es necesario. Por ejemplo con DMR+
+Escribe password
+Escribe puerto local del nuevo MASTER
+Escribe puerto remoto
+Escribe reflector
+Escribe reflector de inicio
+Escribe TG
+Escribe TG BM
+Escribe TG HBLINK
+Escribe TG ID de la conexión
+Escribe tu dirección de correo
+Escribe tu DMRID  7 dígitos 
+Escribe tu mensaje para el grupo
+Escribe UTC
+Escribe valor
+Escribe valor 1-0
+Esquema configuración HOTSPOTS
+Esta opción borrara toda la configuración actual y restaurara un Backup anterior
+Esta opción desactivara la selección anterior de sistemas activos. ¿Activar Crosslinks?
+Esta opción impide la modificación de cualquier configuración
+Esta opción regenerara toda la configuración, cualquier cambio hecho manualmente será borrado ¿Quieres aplicar configuraciones?
+¿Está seguro de borrar el usuario
+¿Está seguro de usar la emulación?
+Este códec es completamente experimental ni EA7JCL EA5GVK BLASMAKER se hacen responsables por ser productos de terceros. Su uso es bajo su responsabilidad
+Esto tardara un poco......
+Fallo en la conexión a internet
+Frecuencia
+Ganancia RX
+Ganancia TX
+Generar configuración mínima
+Gestión de DVSWITCH
+Gestión de Hotspots
+Gestión de recursos
+¿Grabar configuración?
+¿Grabar nuevo Hotspot?
+Hacer Backup
+HBLINK activado con éxito
+HBLINK desactivado
+HBLINK esta activado. Quiere desactivar HBLINK?
+HBLINK esta desactivado. Quiere activar HBLINK?
+Hotspot desactivado
+HOTSPOT aun en estado VIRTUAL. Actívelo y desactívelo para poder entrar en modo EXPERTO
+Hubo un problema conectando a la red WIFI. Reinicia la pi y comprueba que se conecte correctamente.
+Idioma
+Indica con quien se conectara tu MASTER
+Indicativo
+Información de red
+Información general
+Instalando software
+Intervalo baliza
+Introduce frecuencia. Ej. 438025000
+Introduce nombre de dominio elegido
+Introducir reflector de inicio
+Introduzca token asignado
+¿Inversión?
+IP Remota
+Liberada nueva actualización
+Limite máximo de Hotspot con acceso a DSTAR alcanzado. Desactive Dstar en algún otro Hotspot, o en este para poder activarlo
+Mascara de red
+Máster borrado. Regenera configuración para aplicar cambios
+Menú experto
+Menú general
+Modo experto
+Modo experto D-Star
+Modo experto HOTSPOT ACTIVOS
+Módulo
+Módulo DSTAR
+Módulo XLX
+Mostrar información de red
+MySQL esta caído se intentara reiniciar el servicio
+Nivel de brillo de 0 a 100
+Escribe la mascare de red: Normalmente 255.255.255.0:
+No es posible activar este Hotspot, puerto Hotspot en uso por otro Hotspot
+No existe archivo de copia de seguridad. Si tienes uno, cópialo a /home/pi/dvlink_backup y reinténtelo para que DVLINK lo interprete
+No existen Hotspots
+No existen identidades secundarias que borrar
+No existen MASTERS para borrar
+No existen PEERS para borrar
+No existen reglas para borrar
+NO guardado
+No hay actualizaciones para DVLINK
+No hay Hotspots activos
+No hay Hotspots inactivos
+No existen OPENBRIDGES para borrar
+No se ha conseguido restaurar MySQL el sistema se reiniciara
+Nueva IP para tu Raspberry
+Nuevo HOTSPOT
+Nuevo valor de ganancia RX. Normalmente 6.
+Nuevo valor de ganancia TX. Normalmente 0.35.
+Otras opciones
+PEER borrado.  Regenera la configuración para aplicar cambios
+Personalizado
+Personalizar conexión
+Preparando BD. Por favor espere....
+Puerta de enlace
+Puerto
+Puerto local
+Puerto local en uso. Usa otro.
+Puerto nextion
+Puerto remoto
+Puerto TGIF
+Puerto USRP
+¿Quieres invertir RX?
+¿Quieres invertir TX?
+¿Quieres mandarnos un mensaje vía Telegram?
+¿Quieres reportar un error de DVSWITCH?
+¿Quieres usar Dúplex?
+¿Quieres usar la emulación?
+Radio ID
+Recopilando información....
+Recuerda. Después de una modificación en modo EXPERTO el Hotspot solo puede ser reiniciado. Esta configuración solo tiene aplicación sobre los sistemas que se tengan activos en este Hotspot. Si se desactiva y activa perderá la configuración experta. SOLO LOS DMR-GATEWAYS EXPERTOS SE CONSERVARAN!!
+Redes de usuario
+Redes WiFi
+Reflector inicio
+Regla borrada
+Regla completada correctamente
+Reiniciar HOTSPOT
+¿Reiniciar Ircddbgateway?
+Reiniciar Pi
+Reiniciar servicios
+Reiniciar servicios HBLINK
+Reiniciar usuario DVSwitch
+Reinicio usuario OK
+Reporte de error DVSWITCH
+Reporte de error enviado correctamente
+Restaurando Backup....
+Salir
+Salir al menú DVLINK
+Salir de DVLINK
+Se enviara la información recopilada. ¿Enviar?
+Se enviara un correo con el Backup a la dirección suministrada. También se mantendrá una copia en /home/pi/dvlink_backup
+Se enviaran sus comentarios y archivos de configuraciones
+Se generara nuevo usuario DVSWITCH con la siguiente información:
+Se generara un nuevo HOTSPOT con la siguiente información:
+Se generara un nuevo MASTER con la siguiente información:
+Se ha registrado ya? tiene el nombre de dominio y el token?
+Se pedirá confirmación en la siguiente ventana
+Se reiniciara HBLINK. El Dashboard tardara unos segundos en responder
+Selección conexión
+Selección de Crosslink activo
+Selección de red
+Selección de sistemas activos
+Selección de slot XLX
+Selección PEER a borrar
+Selecciona con que red harás Crosslink
+Selecciona HOTSPOT a borrar
+Selecciona Máster
+Selecciona Máster a borrar
+Selecciona Máster a editar
+Selecciona Módulo
+Selecciona OPENBRIDGE a borrar
+Selecciona OPENBRIDGE a editar
+Selecciona PEER a editar
+Selecciona regla a borrar
+Selecciona servidor
+Selecciona tiempo de reconexión
+Selecciona tipo de pantalla
+Selecciona usuario a borrar. Ten en cuenta que la configuración asociada también será borrada.
+Selecciona XLX-PEER
+Selecciona XLX-PEER a borrar
+Selecciona XLX-PEER a editar
+Seleccionar CCS
+Seleccionar de un listado
+Seleccionar red
+Selecciona usuario
+Servicio MySQL recuperado
+Servidor de inicio XLX
+Si cambió la configuración debería reiniciar. Quiere reiniciar ahora?
+Sistemas activos
+Sobrescribir Backup?
+Software instalado.  Configurando.....
+¿Solo yo podre conectar?
+Sufijo aprs
+Tiempo
+Tiempo CW
+Tiempo desconexión en minutos
+Tiempo desconexión en segundos
+Tiempo reconexión reflector de inicio. Solo para DMR+. En caso contrario dejar en blanco
+Tiempo reconexión reflector inicio
+Tienes que ejecutar el script como root.
+Tipo de Modem
+Tipo Oled
+Todo correcto
+¿Usar Dúplex?
+Valor de 1 a 15
+Ver actividad DVSWITCH
+Ver actividad HOTSPOT
+Ver configuración DVSWITCH
+Ver la IP que usa DVLINK
+Ver reglas
+Ver versión DVSWITCH
+Visor recursos del sistema
+Volver
+Vuelva a ejecutar el script si cambia de idea
+XLX-PEER borrado. Regenera configuración para aplicar cambios
+Ya existe un Backup. Quieres sobrescribirlo??
+Borrando Hotspots.....
+Borrando HBLINK.....
+Backup encontrado de 
+Borrando BD.....
+Restaurar Backup
+Intentando que la posibilidad de corrupción de la misma sea mínima
+Envíanos tu opinión a través del siguiente formulario Telegram o únete al grupo en https://t.me/joinchat/AveYRFJCxSbhKbI2ti1_Og
+Menú congelado
+Introduzca nueva contraseña
+Login correcto
+Comprobando versiones...
+DVSWITCH activado con éxito
+Arranca reflector al inicio
+Puerto acceso remoto
+Puerto BM
+Puerto DMR+
+Puerto HBLINK
+IP personalizada
+Selecciona usuario 
+Quieres grabar este nuevo usuario?
+Cambio a 
+Selecciona sistemas que estarán activos:
+Borrar usuario
+Nombre
+Numero de Peers
+Escribe el nombre del nuevo Master
+Escribe contraseña del nuevo Master
+¿Quieres grabar este nuevo Master?
+¿Quieres grabar este nuevo OPENBRIDGE?
+¿Que direccionamiento quieres usar?
+Nombre peer
+No existen XLX-PEERS para borrar
+OPENBRIDGE borrado.  Regenera la configuración para aplicar cambios
+RESUMEN REGLAS CREADAS
+Selecciona Crosslinks que estarán activos en este Hotspot:
+Reflector de inicio
+Usar solo yo
+Sistemas disponibles
+IP/url servidor DMR
+Selección de red para Crosslinks
+Activar baliza
+Activar baliza cada X minutos
+Tiempo para desconexión en minutos
+¿Usas un Hotspot?
+Brillo
+Configuración de Hotspots
+¿Reiniciar Ircddbgateway?
+Generando configuración. Por favor espere.....
+Generando scripts
+Arrancando servicios
+DVLINK ACTUALIZADO CORRECTAMENTE
+Hubo un problema durante la actualización. Reinténtelo mas tarde
+Generando Regla
+Generando Master
+Generando Peer
+Generando XLXPEER
+Generando OPENBRIDGE
+Iniciando HBLINK. Por favor espere
+Iniciando DASHBOARD. Por favor espere
+No se ha activado el HOTSPOT por no tener ningún sistema seleccionado como activo
+DVLINK es una imagen creada por
+Agrademos el apoyo en las traducciones a
+########  DVLINK 9.2.0 ###############
+Calibrar modem
+1. Pulsa la tecla e
+2. Introduce la frecuencia a calibrar 9 cifras
+3. Pulsa el tipo de calibracion. Para DMR b
+4. Haz ppt y suelta
+5. Juega con f y F para subir y bajar frecuencia
+Para encontrar el punto con mejor BER
+6. Pulsa la tecla q para volver al menu
+¿ Quires activar la compatibilidad GPIO en Pi4 ?. Necesario reiniciar.
