@@ -1,1 +1,9 @@
 
+Arrancador necesita tener instalado en el sistema el software dialog.  En caso de no encontrarlo intentara hacerlo por usted.ç
+En caso de que no pueda realizarlo, por favor, instalalo manualmente.
+
+sudo apt install dialog
+
+
+
+Arrancador.sh es el configurador del instalador.
