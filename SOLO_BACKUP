@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+####################################################################################################################
+#Copia los scripts y shmz a la carpeta backup de administracion
+dia=$(date +'%d-%m-%Y')
+hora=$(date +'%H:%M')
+destinobackup=/root/ADMINISTRACION/BACKUPs/$dia/$hora
+mkdir -p $destinobackup
+echo "Copia scripts"
+cp -r /etc/scripts/ $destinobackup
+echo "Copia shmz"
+cp -r /shmz/ $destinobackup
+echo "Copia fuentes C"
+cp -r /root/ADMINISTRACION/FUENTE_C/ $destinobackup
+echo "Copia ficheros sueltos"
+cp /root/ADMINISTRACION/* $destinobackup
+echo "Termina copia de seguridad. Es normal que haya dado error. Las carpetas ya estan copiadas anteriormente "
+#######################################################################################################################
+
