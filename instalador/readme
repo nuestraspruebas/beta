@@ -1,10 +1,13 @@
 
-Arrancador necesita tener instalado en el sistema el software dialog.  En caso de no encontrarlo intentara hacerlo por usted.
+1.  chmox +x arrancador.sh
+
+
+2. Arrancador necesita tener instalado en el sistema el software dialog.  En caso de no encontrarlo intentara hacerlo por usted.
 En caso de que no pueda realizarlo, por favor, instalelo manualmente.
 
 __________________________________________________________________________________________________________________________________
 
-Starter needs to have the dialog software installed on the system. In case of not finding it, it will try to do it for you.
+2. Starter needs to have the dialog software installed on the system. In case of not finding it, it will try to do it for you.
 In case you can't do it, please install it manually.
 
 
@@ -12,6 +15,6 @@ sudo apt install dialog
 
 
 
-Arrancador.sh es el configurador del instalador.
+3. Arrancador.sh es el configurador del instalador.
 ________________________________________________
-Starter.sh is the installer configurator.
+3. Starter.sh is the installer configurator.
