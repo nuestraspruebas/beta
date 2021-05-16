@@ -1,0 +1,1 @@
+sed -i "8s/.*/1/" /etc/sslb

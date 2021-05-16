@@ -1,0 +1,4 @@
+#ª/bin/bash
+PASSMENU="0"
+sed -i "6s+.*+$PASSMENU+"  /etc/sslb
+echo "Contraseña DVLINK reseteada correctamente"
