@@ -1,0 +1,7 @@
+#!/bin/bash
+cd /opt/hbmonitor
+c=`ps aux | grep monitor.py | awk '{print $2}'`
+kill -9 $c
+systemctl restart hblink3.service
+systemctl restart hbparrot.service
+python3 /opt/hbmonitor/monitor.py &

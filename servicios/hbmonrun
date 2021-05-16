@@ -1,0 +1,12 @@
+#!/bin/bash
+cd /opt/hbmonitor
+PROCESO=`ps aux | grep -c monitor.py`
+if [[ $PROCESO -eq 1 ]]
+ then
+  killall python
+  systemctl restart hblink3.service
+  systemctl restart hbparrot.service
+  python3 /opt/hbmonitor/monitor.py &
+fi
+exit $1
+

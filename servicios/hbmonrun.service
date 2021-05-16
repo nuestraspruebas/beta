@@ -1,0 +1,13 @@
+[Unit]
+Description= Hbmonitor
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/hbmonrun
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+WantedBy=default.target
+
+

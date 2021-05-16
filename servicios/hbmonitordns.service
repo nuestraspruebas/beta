@@ -1,0 +1,16 @@
+[Unit]
+Description=Gestor dns lastheard HBMONITOR y menu  by EA7JCL
+
+After=network-online.target syslog.target netcheck.service
+Wants=network-online.target
+
+[Service]
+StandardOutput=null
+WorkingDirectory=/usr/bin
+ExecStart=dns.sh
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+
+
