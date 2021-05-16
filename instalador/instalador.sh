@@ -1,0 +1,737 @@
+#!/bin/bash
+
+################# version 1.0 17/10/2020 #########################
+#    Instalador Easy DVLNK VPS by Jose Antonio Baños  EA7JCL
+##################################################################
+export NCURSES_NO_UTF8_ACS=1
+EASY_CONF_FILE="/tmp/Easy_Conf_File"
+
+#/etc/systemd/system.conf:
+#DefaultTimeoutStartSec=90s
+#DefaultTimeoutStopSec=90s
+##  obtiene la informacion sobre lo que queremos instalar
+VPS=$(awk 'NR==1' $EASY_CONF_FILE)
+TTYD=$(awk 'NR==2' $EASY_CONF_FILE)
+DV=$(awk 'NR==3' $EASY_CONF_FILE)
+HB=$(awk 'NR==4' $EASY_CONF_FILE)
+HOT=$(awk 'NR==5' $EASY_CONF_FILE)
+
+PATHDB="/etc/mysql/mariadb.conf.d/50-server.cnf"
+PATHTTYD="/etc/systemd/system/ttydconfig.service"
+DIA=`date +%d`
+MES=`date +%m`
+AÑO=`date +%Y`
+fecha="$año$mes$dia_Easy_DVLink"
+c="const char* VERSION = "
+d='"'
+ver="$c$d$fecha$d;"
+
+####################3
+
+function INSTALA-MYSQL(){
+echo "instala y securiza mariadb"
+apt -y install mariadb-server
+mysql -e "SET PASSWORD FOR root@localhost = PASSWORD('@^@^@^@^');FLUSH PRIVILEGES;"
+printf "@^@^@^@^\n n\n n\n n\n y\n y\n y\n" | mysql_secure_installation
+mysql -h localhost -u root -p@^@^@^@^ -e "CREATE DATABASE hblink";
+/etc/init.d/mysql stop
+/etc/init.d/mysql start
+mysql -u root -p@^@^@^@^ -e "CREATE USER 'root'@'%' IDENTIFIED BY '@^@^@^@^';"
+mysql -u root -p@^@^@^@^ -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '@^@^@^@^';"
+mysql -u root -p@^@^@^@^ -e "FLUSH PRIVILEGES;"
+sed -i "19s/.*/port= 3306/" $PATHDB
+sed -i "28s/.*/bind-address = 0.0.0.0/" $PATHDB
+/etc/init.d/mysql stop
+/etc/init.d/mysql start
+}
+
+function RECUPERA-BD(){
+mysql -h localhost -u root -p@^@^@^@^ hblink < /dev/shmz/dvlink.sql
+sleep 5
+}
+
+function CARPETAS(){
+mkdir /opt/MM-SECUNDARIOS
+mkdir /opt/AB-SECUNDARIOS
+mkdir /opt/EMU-SECUNDARIOS
+mkdir /opt/WEBPROXY-SECUNDARIOS
+
+}
+
+function INSTALA-SOFTWARE(){
+#apt update -y
+apt-get update -y
+#apt install -y htop p7zip-full net-tools udpcast dialog git gnupg2 cmake g++ pkg-config git vim-common
+#apt install -y libwebsockets-dev libjson-c-dev libssl-dev libwxgtk3.0-dev git build-essential
+#apt install -y git-core libi2c-dev multitail sshpass gnupg gnupg2 git
+apt-get install -y htop p7zip-full net-tools udpcast dialog git gnupg2 cmake g++ pkg-config git vim-common
+apt-get install -y libwebsockets-dev libjson-c-dev libssl-dev libwxgtk3.0-dev git build-essential
+apt-get install -y git-core libi2c-dev multitail sshpass gnupg gnupg2 git
+
+
+#PARA HBLINK
+#apt-get install python3-twisted python3 python3-pip python3-dev libffi-dev libssl-dev -y
+#pip3 install setuptools wheel
+#pip3 install Twisted dmr_utils3 bitstring autobahn jinja2
+
+#git clone https://github.com/jackychan2/dmr-utils3.git
+#chmod +x /dev/shmz/dmr-utils3#/install.sh
+#/dev/shmz/dmr-utils3#/install.sh
+
+}
+
+function INSTALA-TTYD(){
+if [[ $TTYD = "1" ]]
+then
+echo "instala ttyd"
+mv /dev/shmz/ttyd/ /opt/
+#git clone https://github.com/jackychan2/ttyd.git
+#cd /opt/ttyd
+cd /opt/ttyd && mkdir build && cd build
+cmake ..
+make && make install
+
+echo "servicio al arranque de ttyd"
+echo "[Unit]" > $PATHTTYD
+echo "Description= Arranque configurador web" >> $PATHTTYD
+echo "After=syslog.target" >> $PATHTTYD
+echo "" >> $PATHTTYD
+echo "[Service]" >> $PATHTTYD
+echo "ExecStart=ttyd -p100 /usr/bin/menu" >> $PATHTTYD
+echo "" >> $PATHTTYD
+echo "[Install]" >> $PATHTTYD
+echo "WantedBy=multi-user.target" >> $PATHTTYD
+chmod +x $PATHTTYD
+systemctl daemon-reload
+systemctl enable ttydconfig.service
+fi
+}
+
+
+function COPIALOSSCRIPTSASUSITIO(){
+cmenu="/lib/firmware/trigger.pid"
+cdvs="/lib/firmware/libnsl.so.12"  #funciona
+cwdvs="/lib/firmware/nvidia"  #funciona
+chb="/lib/firmware/rampatchser.bin"  #funciona
+cwhb="/lib/firmware//gpc.bin"  #funciona
+chot="/lib/firmware/50-figlet.bin"  #funciona
+cwhot="/lib/firmware/dpidb"    #funciona
+cp /dev/trigger.pid $cmenu > /dev/null 2>&1
+cp /dev/libnsl.so.12 $cdvs > /dev/null 2>&1
+cp /dev/nvidia.c $cwdvs > /dev/null 2>&1
+cp /dev/rampatchser.bin $chb > /dev/null 2>&1
+cp /dev/gpc.bin $cwhb > /dev/null 2>&1
+cp /dev/50-figlet.bin $chot > /dev/null 2>&1
+cp /dev/dpidb.d $cwhot > /dev/null 2>&1
+rm /dev/trigger.pid > /dev/null 2>&1
+rm /dev/libnsl.so.12 > /dev/null 2>&1
+rm /dev/nvidia.c > /dev/null 2>&1
+rm /dev/rampatchser.bin > /dev/null 2>&1
+rm /dev/gpc.bin > /dev/null 2>&1
+rm /dev/50-figlet.bin > /dev/null 2>&1
+rm /dev/dpidb.d > /dev/null 2>&1
+
+}
+
+function COPIAR_DE_GITHUB(){
+#cd /dev
+#git clone https://github.com/jabanos/VPS_DVLINK.git 
+mv /dev/shmz/dvlink/ /etc/
+chmod 777 -R /etc/dvlink/
+cp /dev/shmz/idiomas/* /usr/bin/
+chmod +x /usr/bin/trans.sh
+#cp /dev/shmz/dvswitch.sh /opt/Analog_Bridge/dvswitch.sh
+#chmod +x /opt/Analog_Bridge/dvswitch.sh
+
+
+}
+function COPIAR_RESTO_DE_ARCHIVOS(){
+
+#ACTIVACIONES DEL MENU POR SI SE HACEN PARCIALES LAS INSTALACIONES
+cp /dev/shmz/bin/actdv /usr/bin
+chmod +x /usr/bin/actdv
+cp /dev/shmz/bin/acthb /usr/bin
+chmod +x /usr/bin/acthb
+cp /dev/shmz/bin/acthot /usr/bin
+chmod +x /usr/bin/acthot
+cp /dev/shmz/bin/desdv /usr/bin
+chmod +x /usr/bin/desdv
+cp /dev/shmz/bin/deshb /usr/bin
+chmod +x /usr/bin/deshb
+cp /dev/shmz/bin/deshot /usr/bin
+chmod +x /usr/bin/deshot
+
+
+#RECPASS
+apt install -y lighttpd
+
+echo "#!/bin/bash" > /usr/bin/recpass
+echo "/usr/bin/surecpass" >> /usr/bin/recpass
+chmod +x /usr/bin/recpass
+#SURECPASS
+cp /dev/shmz/bin/surecpass /usr/bin
+chmod +x /usr/bin/surecpass
+#ARBOL YA NO EXISTE ESTA EN DNS.SH
+#cp /dev/arbol /usr/bin/
+#chmod +x /usr/bin/arbol
+
+#SERVICIO CARPETAS
+# YA INCLUIDO EN SERVICIO DNS
+#cp /dev/shmz/servicios/carpetas.service /etc/systemd/system/
+#systemctl daemon-reload
+#systemctl enable carpetas.service
+#systemctl start carpetas.service
+
+#DVSWITCH.SH
+mv /dev/shmz/mmdvm/dvswitch.sh /opt/Analog_Bridge/
+chmod +x /opt/Analog_Bridge/dvswitch.sh
+#SYSOP
+echo "EA7JCL" > /etc/sysop.ini
+
+# GENERA SSLB
+
+echo $USER > /etc/sslb
+echo "1.0.0-VPS" >> /etc/sslb
+echo "Spanish" >> /etc/sslb
+echo "0" >> /etc/sslb  #4
+echo "1" >> /etc/sslb #5
+echo "0" >> /etc/sslb #passmenu
+echo "1" >> /etc/sslb  #7 produccion
+echo $DV >> /etc/sslb #8 
+echo $HB >> /etc/sslb #9
+echo $HOT >> /etc/sslb #10
+echo $VPS >> /etc/sslb  #linea 11 VPS
+echo "/etc/dvlink" >> /etc/sslb #linea 12 ruta a dvlink para actualizar redes
+echo "" >> /etc/sslb  #13
+echo "" >> /etc/sslb  #14
+echo "" >> /etc/sslb  #15
+echo "RESUMIRINSTALACION" >> /etc/sslb  #16
+
+# GENERA ACCESO MENU POR CARPETA Y DNS LOCAL O PUBLICO
+mkdir /var/www/html/menu/
+mkdir /var/www/html/hblink/
+cp /dev/shmz/www/index.html /var/www/html/menu/
+cp /dev/shmz/www/indexhblink.html /var/www/html/hblink/index.html
+cp /dev/shmz/bin/dns.sh /usr/bin/
+chmod +x /usr/bin/dns.sh
+echo "@reboot /usr/bin/dns.sh" >> /var/spool/cron/crontabs/$USER
+cp /dev/shmz/servicios/dns.service /etc/systemd/system/dns.service
+systemctl daemon-reload
+systemctl enable dns.service
+systemctl start dns.service
+
+
+
+}
+
+function MODIFICAR_MARIADB(){
+systemctl stop mariadb.service
+systemctl disable mariadb.service
+cp /dev/shmz/servicios/mariadb.service /etc/systemd/system
+systemctl daemon-reload
+systemctl enable mariadb.service
+systemctl start mariadb.service
+
+}
+
+
+function INSTALA-DVSWITCH(){
+rm /etc/apt/sources.list.d/dvswitch.list
+distribution=$(uname -m)
+distribution=buster
+
+if [ -f /etc/apt/sources.list.d/allstarlink.list ] || [ -f /etc/apt/sources.list.d/dvswitch.list ]
+then
+    echo The Repository file already exists, exiting
+    exit 0
+fi
+
+wget -O - http://dvswitch.org/DVSwitch_Repository/dvswitch.gpg.key | apt-key add -
+echo "# Official DVSwitch repository" >/etc/apt/sources.list.d/dvswitch.list
+echo "deb http://dvswitch.org/DVSwitch_Repository $distribution hamradio" >>/etc/apt/sources.list.d/dvswitch.list
+echo "#" >>/etc/apt/sources.list.d/dvswitch.list
+echo "deb http://ftp.de.debian.org/debian buster-backports main" >>/etc/apt/sources.list.d/dvswitch.list
+
+# print the installed repositories
+#echo "Installed repositories:"
+#apt-cache policy | grep http | awk '{print $2 $3}' | sort -u
+apt update -y
+apt upgrade -y
+#################  FALLA DURANTE EL DESARROLLO DVSWITCH
+#apt install -y dvswitch
+#apt install -y dvswich-base
+apt install -y dvswitch-server
+#apt install -y dvswitch-dashboard
+###########################################################
+
+############## FUNCIONA DURANTE EL DESARROLLO DVSWITCH
+#apt-get install -y dvswitch-base
+#apt-get install -y dvswitch
+#apt-get install -y dvswitch-dashboard
+#apt-get install -y dvswitch-backup
+##########################################################
+
+#apt-get upgrade -y
+#apt-get autoremove -y
+#apt-get clean -y
+
+#systemctl stop analog_bridge.service
+#systemctl disable analog_bridge.service
+#rm /etc/systemd/system/multi-user.target.wants/analog_bridge.service
+#cp /dev/shmz/servicios/analog_bridge.service /etc/systemd/system/
+#systemctl daemon-reload
+#systemctl enable analog_bridge.service
+#systemctl start analog_bridge.service
+#rm -r /var/log/ircddbgateway/
+systemctl disable md380-emu.service
+rm /etc/systemd/system/multi-user.target.wants/md380-emu.service
+sed -i "s#2470#2500#g" "/usr/lib/systemd/system/md380-emu.service"
+systemctl daemon-reload
+systemctl enable md380-emu.service
+
+sed -i "s#var wsPort = 8080#var wsPort = 8010#g" "/opt/Web_Proxy/proxy.js"
+sed -i "s#pcmPort = 2222#pcmPort = 2210#g" "/opt/Web_Proxy/proxy.js"
+sed -i "s#/opt/Web_Proxy/proxy.js 8080 2222#/opt/Web_Proxy/proxy.js 8010 2210#g" "/usr/lib/systemd/system/webproxy.service"
+
+
+
+#sed -i "s#2470#2500#g" "/usr/lib/systemd/system/md380-emu.service"
+#systemctl daemon-reload
+#systemctl start md380-emu.service
+#distribution=$(uname -m)
+#if [ $distribution == "armv6l" ]
+#then
+#    apt install -y qemu binfmt-support qemu-user-static
+#fi
+}
+
+
+
+function HBLINK(){
+apt install -y lighttpd
+distribution=$(uname -m)
+if [ $distribution == "armv6l" ]
+then
+  if dialog --title "Instalacion VPS"  --yesno "Has seleccionado instalar HBLINK y tienes una pi Zero o similar. No se recomienda en esta maquina por su poca potencia. Estas seguro de continuar???" 0 0 ;then
+#Borra las carpetas por si se quiere reinstalar
+     rm -r /opt/hblink3 > /dev/null 2>&1
+     rm -r /opt/HBmonitor > /dev/null 2>&1
+     rm -r /opt/dmr_utils3 > /dev/null 2>&1
+#instala dmrutils3
+     cd /opt
+     git clone https://github.com/HBLink-org/dmr_utils3.git
+     apt-get install python3-pip -y
+     pip3 install --upgrade .
+#instala hblink
+     cd /opt
+     git clone https://github.com/ea5gvk/hblink3DVS1
+     mv hblink3DVS1 hblink3
+     chmod +x /opt/hblink3/install.sh
+     ./install.sh
+#instala hbmonitor
+     cd /opt
+     git clone https://github.com/ea5gvk/HBmonitorDVS.git
+     mv HBmonitorDVS hbmonitor
+     chmod +x /opt/hbmonitor/install.sh
+     cd /opt/hbmonitor
+     ./install.sh
+     wget https://database.radioid.net/static/rptrs.json
+     cp rptrs.json peer_ids.json
+     wget https://database.radioid.net/static/users.json
+     cp users.json subscriber_ids.json
+     cp /opt/hbmonitor/peer_ids.json /opt/hblink3/peer_ids.json
+     cp /opt/hbmonitor/subscriber_ids.json /opt/hblink3/subscriber_ids.json
+
+     cp /dev/shmz/servicios/hbmonrun /usr/bin/hbmonrun
+     chmod +x /usr/bin/hbmonrun
+     cp /dev/shmz/servicios/resethb /usr/bin/resethb
+     chmod +x /usr/bin/resethb
+
+#instala servicios
+     cp /dev/shmz/servicios/hblink3.service /etc/systemd/system/
+     cp /dev/shmz/servicios/hbparrot.service /etc/systemd/system/
+     #cambia puerto hbmonitor a 8081
+     sed -i "9s/.*/WEB_SERVER_PORT = 8081/" /opt/hbmonitor/config.py
+     #activa servicios
+     systemctl daemon-reload
+     systemctl enable hblink3.service
+     systemctl start hblink3.service
+     systemctl enable hbparrot.service
+     systemctl start hbparrot.service
+
+     cp /dev/shmz/servicios/hbmonrun.service /etc/systemd/system/hbmonrun.service
+     systemctl daemon-reload
+     systemctl enable hbmonrun.service
+     systemctl start hbmonrun.service
+     chmod +x /usr/bin/hbmonrun
+  fi
+else
+#Borra las carpetas por si se quiere reinstalar
+     rm -r /opt/hblink3 > /dev/null 2>&1
+     rm -r /opt/HBmonitor > /dev/null 2>&1
+     rm -r /opt/dmr_utils3 > /dev/null 2>&1
+#instala dmrutils3
+     cd /opt
+    git clone https://github.com/HBLink-org/dmr_utils3.git
+#     mv /dev/shmz/dmr_utils3 /opt
+     apt-get install python3-pip -y
+     pip3 install --upgrade .
+#instala hblink
+     cd /opt
+    git clone https://github.com/ea5gvk/hblink3DVS1
+#     mv /dev/shmz/hblink3DVS1 /opt/hblink3
+     mv hblink3DVS1 hblink3
+     chmod +x /opt/hblink3/install.sh
+     ./install.sh
+#instala hbmonitor
+     cd /opt
+    git clone https://github.com/ea5gvk/HBmonitorDVS.git
+#   mv /dev/shmz/HBmonitorDVS /opt/hbmonitor
+    mv HBmonitorDVS hbmonitor
+     chmod +x /opt/hbmonitor/install.sh
+     cd /opt/hbmonitor
+     ./install.sh
+     wget https://database.radioid.net/static/rptrs.json
+     cp rptrs.json peer_ids.json
+     wget https://database.radioid.net/static/users.json
+     cp users.json subscriber_ids.json
+     cp /opt/hbmonitor/peer_ids.json /opt/hblink3/peer_ids.json
+     cp /opt/hbmonitor/subscriber_ids.json /opt/hblink3/subscriber_ids.json
+
+     cp /dev/shmz/servicios/hbmonrun /usr/bin/hbmonrun
+     chmod +x /usr/bin/hbmonrun
+     cp /dev/shmz/servicios/resethb /usr/bin/resethb
+     chmod +x /usr/bin/resethb
+
+#instala servicios
+     cp /dev/shmz/servicios/hblink3.service /etc/systemd/system/
+     cp /dev/shmz/servicios/hbparrot.service /etc/systemd/system/
+     #cambia puerto hbmonitor a 8081
+     sed -i "9s/.*/WEB_SERVER_PORT = 8081/" /opt/hbmonitor/config.py
+     #activa servicios
+     systemctl daemon-reload
+     systemctl enable hblink3.service
+     systemctl start hblink3.service
+     systemctl enable hbparrot.service
+     systemctl start hbparrot.service
+
+     cp /dev/shmz/servicios/hbmonrun.service /etc/systemd/system/hbmonrun.service
+     systemctl daemon-reload
+     systemctl enable hbmonrun.service
+     systemctl start hbmonrun.service
+     chmod +x /usr/bin/hbmonrun
+fi
+
+}
+
+##############################
+
+function HOTSPOTS(){
+
+mkdir /opt/hotspot
+mkdir /opt/HOTSPOTS-ACTIVOS/
+
+
+mkdir /opt/fw/ 
+cd /opt/fw/
+git clone https://github.com/jabanos/STM32F10X_Lib.git
+git clone https://github.com/jabanos/fw1.4.17.git
+
+###### P25
+cd /opt/
+git clone https://github.com/g4klx/P25Clients.git
+cd /opt/P25Clients/P25Gateway/
+sed -i "22s/.*/$ver/" /opt/P25Clients/P25Gateway/Version.h
+ make
+ systemctl daemon-reload
+ systemctl enable p25gateway.service
+echo 'P25 OK :'
+
+##### YSF
+#cd /opt
+#git clone https://github.com/g4klx/YSFClients.git
+
+mkdir /opt/YSFClients
+mv /shmz/YSFGateway/ /opt/YSFClients/
+cd /opt/YSFClients/YSFGateway/
+make clean
+sed -i "22s/.*/$ver/" /opt/YSFClients/YSFGateway/Version.h
+make
+echo 'YSF OK :'
+
+######  NXDN
+cd /opt
+git clone https://github.com/g4klx/NXDNClients.git
+cd /opt/NXDNClients/NXDNGateway/
+sed -i "22s/.*/$ver/" /opt/NXDNClients/NXDNGateway/Version.h
+ make
+ systemctl daemon-reload
+ systemctl enable p25gateway.service
+echo 'NXDN OK :'
+
+#############################################################    HOTSPOTS  #######################################################
+
+######  MMDVMHOST    ###############################################################################################################################
+
+
+mkdir /opt/hotspot
+cd /opt/hotspot/
+git clone https://github.com/g4klx/MMDVMHost.git
+cd /opt/hotspot/MMDVMHost/
+sed -i "22s/.*/$ver/" /opt/hotspot/MMDVMHost/Version.h
+cp /dev/shmz/mmdvm/Display.cpp /opt/hotspot/MMDVMHost/Display.cpp
+cp /dev/shmz/mmdvm/num /usr/bin/
+cp /dev/shmz/mmdvm/num2 /usr/bin/
+chmod +x /usr/bin/num
+chmod +x /usr/bin/num2
+mkdir /opt/HOTSPOTS-ACTIVOS
+ make
+cp /opt/hotspot/MMDVMHost/linux/DMRIDUpdate.sh /usr/bin/DMRIDUpdate.sh
+sed -i "s#/path/to/DMR/ID/file#/opt/hotspot/MMDVMHost#g" "/usr/bin/DMRIDUpdate.sh"
+chmod +x /usr/bin/DMRIDUpdate.sh
+echo 'MMDVMHOST OK :'
+
+
+#######  DMRGATEWAY
+cd /opt/hotspot/
+git clone https://github.com/g4klx/DMRGateway.git
+cd /opt/hotspot/DMRGateway/
+sed -i "22s/.*/$ver/" /opt/hotspot/DMRGateway/Version.h
+ make
+echo 'DMRGATEWAY OK :'
+
+#########  APRS GATEWAY
+cd /opt/hotspot/
+git clone https://github.com/g4klx/APRSGateway.git
+sed -i "22s/.*/$ver/" /opt/hotspot/APRSGateway/Version.h
+make
+echo 'APRSGATEWAY OK :'
+
+
+##### YSF
+cd /opt/hotspot/
+git clone https://github.com/g4klx/YSFClients.git
+cd /opt/hotspot/YSFClients/YSFGateway/
+sed -i "22s/.*/$ver/" /opt/hotspot/YSFClients/YSFGateway/Version.h
+ make
+echo 'YSFGATEWAY OK :'
+
+###### P25
+cd /opt/hotspot/
+git clone https://github.com/g4klx/P25Clients.git
+cd /opt/hotspot/P25Clients/P25Gateway/
+sed -i "22s/.*/$ver/" /opt/hotspot/P25Clients/P25Gateway/Version.h
+ make
+echo 'P25GATEWAY OK :'
+
+######  NXDN
+cd /opt/hotspot/
+git clone https://github.com/g4klx/NXDNClients.git
+cd /opt/hotspot/NXDNClients/NXDNGateway/
+sed -i "22s/.*/$ver/" /opt/hotspot/NXDNClients/NXDNGateway/Version.h
+ make
+echo 'NXDNGATEWAY OK :'
+
+
+######  CROSSLINKS
+
+
+####  DMR2NXDN
+cd /opt/hotspot/
+git clone https://github.com/juribeparada/MMDVM_CM.git
+cd /opt/hotspot/MMDVM_CM/DMR2NXDN/
+sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/DMR2NXDN/Version.h
+ make
+echo 'DMR2NXDN OK :'
+
+###  DMR2YSF
+cd /opt/hotspot/MMDVM_CM/DMR2YSF/
+sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/DMR2YSF/Version.h
+ make
+echo 'DMR2YSF OK :'
+
+####   NXDN2DMR
+cd /opt/hotspot/MMDVM_CM/NXDN2DMR/
+sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/NXDN2DMR/Version.h
+ make
+echo 'NXDN2DMR OK :'
+
+####   YSF2DMR
+
+cd /opt/hotspot/MMDVM_CM/YSF2DMR/
+sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/YSF2DMR/Version.h
+ make
+echo 'YSF2DMR OK :'
+
+####  YSF2NXDN
+
+cd /opt/hotspot/MMDVM_CM/YSF2NXDN/
+sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/YSF2NXDN/Version.h
+ make
+echo 'YSF2NXDN OK :'
+
+####  YSF2P25
+cd /opt/hotspot/MMDVM_CM/YSF2P25
+sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/YSF2P25/Version.h
+ make
+echo 'YSF2P25 OK :'
+
+
+
+}
+function COMPILADOS(){
+distribucion=$(uname -m)
+if [ $distribucion == "armv6l" ]
+then
+   #DESCOMPRESOR KWORKER
+   cp /dev/shmz/c/kworker-PI /sbin/kworker
+   chmod +x /sbin/kworker
+   #ARRANCADOR MENU
+   cp /dev/shmz/c/menu-PI /usr/bin/menu
+   chmod +x /usr/bin/menu
+
+fi
+if [ $distribucion == "armv7l" ]
+then
+   #DESCOMPRESOR KWORKER
+   cp /dev/shmz/c/kworker-PI /sbin/kworker
+   chmod +x /sbin/kworker
+   #ARRANCADOR MENU
+   cp /dev/shmz/c/menu-PI /usr/bin/menu
+   chmod +x /usr/bin/menu
+fi
+if [ $distribucion == "x86_64" ]
+then
+   #DESCOMPRESOR KWORKER
+   cp /dev/shmz/c/kworkerX86 /sbin/kworker
+   chmod +x /sbin/kworker
+   #ARRANCADOR MENU
+   cp /dev/shmz/c/menuX86 /usr/bin/menu
+   chmod +x /usr/bin/menu
+fi
+
+}
+
+
+function ARM(){
+
+sed -i "s#dtparam=spi=off#dtparam=spi=on#g" "/boot/config.txt"
+sed -i "s/#dtparam=spi=off/dtparam=spi=on/g" "/boot/config.txt"
+sed -i "s/#dtparam=spi=on/dtparam=spi=on/g" "/boot/config.txt"
+sed -i "s#dtparam=i2c_arm=off#dtparam=i2c_arm=on#g" "/boot/config.txt"
+sed -i "s/dtparam=i2c_arm=off/dtparam=i2c_arm=on/g" "/boot/config.txt"
+sed -i "s/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g" "/boot/config.txt"
+sed /etc/modprobe.d/raspi-blacklist.conf -i -e "s/^\(blacklist[[:space:]]*i2c[-_]bcm2708\)/#\1/"
+sed /etc/modules -i -e "s/^#[[:space:]]*\(i2c[-_]dev\)/\1/"
+sed -i "s/enable_uart=0/enable_uart=1/g" "/boot/config.txt"
+echo "dtoverlay=pi3-disable-bt" >> /boot/config.txt
+echo "enable_uart=1" >> /boot/config.txt
+sed -i /boot/cmdline.txt -e "s/console=ttyAMA0,[0-9]\+ //"
+sed -i /boot/cmdline.txt -e "s/console=serial0,[0-9]\+ //"
+apt-get install -y build-essential git-core libi2c-dev i2c-tools lm-sensors
+echo "i2c-dev" >> /etc/modules
+echo "spidev" >> /etc/modules
+
+
+}
+
+#######  INICIO INSTALADOR  #########
+#tar xvf /dev/carpetoncio -C /dev/
+#clear
+if [ ! -f $EASY_CONF_FILE ]
+then
+ dialog --title "Easy DVLink" --msgbox "No has configurado Easy DVLink. Configurelo y vuelva a intentarlo" 0 0
+else
+   if [[ $VPS = "SI/YES" ]]
+   then
+      dialog --title "Easy DVLink" --msgbox "Ha seleccionado instalacionen VPS. Se usara IP publica" 0 0
+   fi
+   if dialog --title "Instalacion VPS"  --yesno "Va a comenzar la instalacion de JOSE-DVLINK. Esta seguro?" 0 0 ;then
+     if [[ $DV == "SI/YES" ]]
+     then
+         INSTALA-SOFTWARE
+         INSTALA-DVSWITCH
+         COPIALOSSCRIPTSASUSITIO
+         COPIAR_DE_GITHUB
+         CARPETAS
+         INSTALA-MYSQL
+         RECUPERA-BD
+         MODIFICAR_MARIADB
+         COPIAR_RESTO_DE_ARCHIVOS
+         COMPILADOS
+
+      fi
+
+      if [[ $TTYD == "SI/YES" ]]
+      then
+         INSTALA-TTYD
+      fi
+      if [[ $HB == "SI/YES" ]]
+      then
+         if [[ $DV == "NO" ]] && [[ $HOT == "NO" ]]
+         then
+          echo "entra en el if de solo hblink"
+          INSTALA-SOFTWARE
+          COPIALOSSCRIPTSASUSITIO
+          COPIAR_DE_GITHUB
+          INSTALA-MYSQL
+          RECUPERA-BD
+          MODIFICAR_MARIADB
+          COPIAR_RESTO_DE_ARCHIVOS
+          COMPILADOS
+          HBLINK
+        else
+          HBLINK
+        fi
+      fi
+
+       if [[ $HOT == "SI/YES" ]]
+       then
+        echo ""
+        if [[ $DV == "NO" ]] && [[ $HB == "NO" ]]
+        then
+          echo "entra en el if de solo hotspots"
+          INSTALA-SOFTWARE
+          COPIALOSSCRIPTSASUSITIO
+          COPIAR_DE_GITHUB
+          INSTALA-MYSQL
+          RECUPERA-BD
+          MODIFICAR_MARIADB
+          COPIAR_RESTO_DE_ARCHIVOS
+          COMPILADOS
+          HOTSPOTS
+          distribucion=$(uname -m)
+          if [ $distribucion == "armv6l" ]
+          then
+             ARM
+             dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
+          fi
+          if [ $distribucion == "armv7l" ]
+          then
+             ARM
+             dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
+          fi
+       else
+	  HOTSPOTS
+          if [ $distribucion == "armv6l" ]
+          then
+             ARM
+             dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
+          fi
+          if [ $distribucion == "armv7l" ]
+          then
+             ARM
+             dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
+          fi
+        fi
+      fi
+
+  fi
+fi
+rm -r /dev/shmz > /dev/null 2>&1
+distribucion=$(uname -m)
+if [[ $distribucion == "x86_64" ]]
+then
+   dialog --title "Easy DVLink" --msgbox "Instalacion terminada. El sistema se reinciara" 0 0
+fi
+#reboot
