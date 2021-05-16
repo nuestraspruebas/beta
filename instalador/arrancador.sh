@@ -154,8 +154,10 @@ wget -P /tmp/ https://raw.githubusercontent.com/nuestraspruebas/beta/main/script
 dialog --title "" --textbox /tmp/disclaimer 0 0
 rm -f /tmp/disclaimer > /dev/null 2>&1
 if dialog --title " Iniciamos la instalacion / we started the installation"  --yesno "Esta seguro / Are you sure" 0 0 ;then
-    wget -P /tmp/ https://raw.githubusercontent.com/nuestraspruebas/beta/main/scripts/disclaimer  > /dev/null 2>&1
-    dialog --title "Easy DVLink" --msgbox "Instalacion finalizada / Installation finished" 0 0
+    wget -P /tmp/ https://raw.githubusercontent.com/nuestraspruebas/beta/main/instalador/instalador.sh  > /dev/null 2>&1
+    chmod +x /tmp/instalador.sh
+    /tmp/instalador.sh
+    #dialog --title "Easy DVLink" --msgbox "Instalacion finalizada / Installation finished" 0 0
 else
     dialog --title "Easy DVLink" --msgbox "Easy DVLink no se instalara / Easy DVLink will not install" 0 0
 fi
