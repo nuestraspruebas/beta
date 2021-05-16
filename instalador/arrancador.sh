@@ -8,7 +8,7 @@ echo "Menu Configurador by EA7JCL" > /tmp/intro.txt
 echo "        (EA5GVK.ES)       " >> /tmp/intro.txt
 echo "" >> /var/log/dvswitch/intro.txt
 echo "" >> /var/log/dvswitch/intro.txt
-dialog --title "" --textbox /var/log/dvswitch/fichero.txt 0 0
+dialog --title "" --textbox /tmp/intro.txt 0 0
 rm -f /tmp/intro.txt > /dev/null 2>&1
 }
 
