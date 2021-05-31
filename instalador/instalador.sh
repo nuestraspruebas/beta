@@ -5,7 +5,7 @@
 ##################################################################
 export NCURSES_NO_UTF8_ACS=1
 EASY_CONF_FILE="/tmp/Easy_Conf_File"
-
+GIT="https://github.com/nuestraspruebas/"
 #/etc/systemd/system.conf:
 #DefaultTimeoutStartSec=90s
 #DefaultTimeoutStopSec=90s
@@ -83,10 +83,10 @@ apt-get install -y git-core libi2c-dev multitail sshpass gnupg gnupg2 git
 function INSTALA-TTYD(){
 if [[ $TTYD = "1" ]]
 then
+cd /opt/
 echo "instala ttyd"
-mv /dev/shmz/ttyd/ /opt/
-#git clone https://github.com/jackychan2/ttyd.git
-#cd /opt/ttyd
+GIT="$GITttyd.git"
+git clone $GIT
 cd /opt/ttyd && mkdir build && cd build
 cmake ..
 make && make install
@@ -97,7 +97,7 @@ echo "Description= Arranque configurador web" >> $PATHTTYD
 echo "After=syslog.target" >> $PATHTTYD
 echo "" >> $PATHTTYD
 echo "[Service]" >> $PATHTTYD
-echo "ExecStart=ttyd -p100 /usr/bin/menu" >> $PATHTTYD
+echo "ExecStart=ttyd -p100 /etc/scripts/menu.sh" >> $PATHTTYD
 echo "" >> $PATHTTYD
 echo "[Install]" >> $PATHTTYD
 echo "WantedBy=multi-user.target" >> $PATHTTYD
@@ -107,31 +107,6 @@ systemctl enable ttydconfig.service
 fi
 }
 
-
-function COPIALOSSCRIPTSASUSITIO(){
-cmenu="/lib/firmware/trigger.pid"
-cdvs="/lib/firmware/libnsl.so.12"  #funciona
-cwdvs="/lib/firmware/nvidia"  #funciona
-chb="/lib/firmware/rampatchser.bin"  #funciona
-cwhb="/lib/firmware//gpc.bin"  #funciona
-chot="/lib/firmware/50-figlet.bin"  #funciona
-cwhot="/lib/firmware/dpidb"    #funciona
-cp /dev/trigger.pid $cmenu > /dev/null 2>&1
-cp /dev/libnsl.so.12 $cdvs > /dev/null 2>&1
-cp /dev/nvidia.c $cwdvs > /dev/null 2>&1
-cp /dev/rampatchser.bin $chb > /dev/null 2>&1
-cp /dev/gpc.bin $cwhb > /dev/null 2>&1
-cp /dev/50-figlet.bin $chot > /dev/null 2>&1
-cp /dev/dpidb.d $cwhot > /dev/null 2>&1
-rm /dev/trigger.pid > /dev/null 2>&1
-rm /dev/libnsl.so.12 > /dev/null 2>&1
-rm /dev/nvidia.c > /dev/null 2>&1
-rm /dev/rampatchser.bin > /dev/null 2>&1
-rm /dev/gpc.bin > /dev/null 2>&1
-rm /dev/50-figlet.bin > /dev/null 2>&1
-rm /dev/dpidb.d > /dev/null 2>&1
-
-}
 
 function COPIAR_DE_GITHUB(){
 #cd /dev
@@ -319,19 +294,26 @@ then
      rm -r /opt/dmr_utils3 > /dev/null 2>&1
 #instala dmrutils3
      cd /opt
-     git clone https://github.com/HBLink-org/dmr_utils3.git
-     apt-get install python3-pip -y
-     pip3 install --upgrade .
+GIT2="$GITdmr_utils3.git"
+cd /opt/
+ git clone $GIT2
+#git clone https://github.com/HBLink-org/dmr_utils3.git
+apt-get install python3-pip -y
+pip3 install --upgrade .
 #instala hblink
+GIT2="$GIThblink3.git"
      cd /opt
-     git clone https://github.com/ea5gvk/hblink3DVS1
-     mv hblink3DVS1 hblink3
+git clone $GIT2
+#     git clone https://github.com/ea5gvk/hblink3DVS1
+#     mv hblink3DVS1 hblink3
      chmod +x /opt/hblink3/install.sh
      ./install.sh
 #instala hbmonitor
      cd /opt
-     git clone https://github.com/ea5gvk/HBmonitorDVS.git
-     mv HBmonitorDVS hbmonitor
+GIT2="$GITHBmonitor.git"
+git clone $GIT2
+#     git clone https://github.com/ea5gvk/HBmonitorDVS.git
+     mv HBmonitor hbmonitor
      chmod +x /opt/hbmonitor/install.sh
      cd /opt/hbmonitor
      ./install.sh
@@ -342,14 +324,15 @@ then
      cp /opt/hbmonitor/peer_ids.json /opt/hblink3/peer_ids.json
      cp /opt/hbmonitor/subscriber_ids.json /opt/hblink3/subscriber_ids.json
 
-     cp /dev/shmz/servicios/hbmonrun /usr/bin/hbmonrun
-     chmod +x /usr/bin/hbmonrun
-     cp /dev/shmz/servicios/resethb /usr/bin/resethb
-     chmod +x /usr/bin/resethb
+#     cp /dev/shmz/servicios/hbmonrun /usr/bin/hbmonrun
+#     chmod +x /usr/bin/hbmonrun
+#     cp /dev/shmz/servicios/resethb /usr/bin/resethb
+#     chmod +x /usr/bin/resethb
 
 #instala servicios
-     cp /dev/shmz/servicios/hblink3.service /etc/systemd/system/
-     cp /dev/shmz/servicios/hbparrot.service /etc/systemd/system/
+
+#     cp /dev/shmz/servicios/hblink3.service /etc/systemd/system/
+#     cp /dev/shmz/servicios/hbparrot.service /etc/systemd/system/
      #cambia puerto hbmonitor a 8081
      sed -i "9s/.*/WEB_SERVER_PORT = 8081/" /opt/hbmonitor/config.py
      #activa servicios
@@ -359,7 +342,7 @@ then
      systemctl enable hbparrot.service
      systemctl start hbparrot.service
 
-     cp /dev/shmz/servicios/hbmonrun.service /etc/systemd/system/hbmonrun.service
+#     cp /dev/shmz/servicios/hbmonrun.service /etc/systemd/system/hbmonrun.service
      systemctl daemon-reload
      systemctl enable hbmonrun.service
      systemctl start hbmonrun.service
@@ -371,23 +354,36 @@ else
      rm -r /opt/HBmonitor > /dev/null 2>&1
      rm -r /opt/dmr_utils3 > /dev/null 2>&1
 #instala dmrutils3
-     cd /opt
-    git clone https://github.com/HBLink-org/dmr_utils3.git
+
+GIT2="$GITdmr_utils3.git"
+cd /opt/
+ git clone $GIT2
+#    git clone https://github.com/HBLink-org/dmr_utils3.git
 #     mv /dev/shmz/dmr_utils3 /opt
      apt-get install python3-pip -y
      pip3 install --upgrade .
 #instala hblink
+ GIT2="$GIThblink3.git"
      cd /opt
-    git clone https://github.com/ea5gvk/hblink3DVS1
+git clone $GIT2
+
+
+#    git clone https://github.com/ea5gvk/hblink3DVS1
 #     mv /dev/shmz/hblink3DVS1 /opt/hblink3
-     mv hblink3DVS1 hblink3
+#     mv hblink3DVS1 hblink3
      chmod +x /opt/hblink3/install.sh
      ./install.sh
 #instala hbmonitor
      cd /opt
-    git clone https://github.com/ea5gvk/HBmonitorDVS.git
+GIT2="$GITHBmonitor.git"
+git clone $GIT2
+#     git clone https://github.com/ea5gvk/HBmonitorDVS.git
+     mv HBmonitor hbmonitor
+
+#     cd /opt
+#    git clone https://github.com/ea5gvk/HBmonitorDVS.git
 #   mv /dev/shmz/HBmonitorDVS /opt/hbmonitor
-    mv HBmonitorDVS hbmonitor
+#    mv HBmonitorDVS hbmonitor
      chmod +x /opt/hbmonitor/install.sh
      cd /opt/hbmonitor
      ./install.sh
@@ -439,7 +435,9 @@ git clone https://github.com/jabanos/fw1.4.17.git
 
 ###### P25
 cd /opt/
-git clone https://github.com/g4klx/P25Clients.git
+GIT2="$GITP25Clients.git"
+git clone $GIT2
+#git clone https://github.com/g4klx/P25Clients.git
 cd /opt/P25Clients/P25Gateway/
 sed -i "22s/.*/$ver/" /opt/P25Clients/P25Gateway/Version.h
  make
@@ -450,9 +448,11 @@ echo 'P25 OK :'
 ##### YSF
 #cd /opt
 #git clone https://github.com/g4klx/YSFClients.git
-
-mkdir /opt/YSFClients
-mv /shmz/YSFGateway/ /opt/YSFClients/
+cd /opt/
+GIT2="$GITYSFClients.git"
+git clone $GIT2
+#mkdir /opt/YSFClients
+#mv /shmz/YSFGateway/ /opt/YSFClients/
 cd /opt/YSFClients/YSFGateway/
 make clean
 sed -i "22s/.*/$ver/" /opt/YSFClients/YSFGateway/Version.h
@@ -461,7 +461,9 @@ echo 'YSF OK :'
 
 ######  NXDN
 cd /opt
-git clone https://github.com/g4klx/NXDNClients.git
+GIT2="$GITNXDNClients.git"ç
+git clone $GIT2
+#git clone https://github.com/g4klx/NXDNClients.git
 cd /opt/NXDNClients/NXDNGateway/
 sed -i "22s/.*/$ver/" /opt/NXDNClients/NXDNGateway/Version.h
  make
@@ -476,14 +478,19 @@ echo 'NXDN OK :'
 
 mkdir /opt/hotspot
 cd /opt/hotspot/
-git clone https://github.com/g4klx/MMDVMHost.git
+GIT2="$GITMMDVMHost.git"
+git clone $GIT2
+
+#git clone https://github.com/g4klx/MMDVMHost.git
 cd /opt/hotspot/MMDVMHost/
 sed -i "22s/.*/$ver/" /opt/hotspot/MMDVMHost/Version.h
-cp /dev/shmz/mmdvm/Display.cpp /opt/hotspot/MMDVMHost/Display.cpp
-cp /dev/shmz/mmdvm/num /usr/bin/
-cp /dev/shmz/mmdvm/num2 /usr/bin/
-chmod +x /usr/bin/num
-chmod +x /usr/bin/num2
+
+#cp /dev/shmz/mmdvm/Display.cpp /opt/hotspot/MMDVMHost/Display.cpp
+#cp /dev/shmz/mmdvm/num /usr/bin/
+#cp /dev/shmz/mmdvm/num2 /usr/bin/
+
+#chmod +x /usr/bin/num
+#chmod +x /usr/bin/num2
 mkdir /opt/HOTSPOTS-ACTIVOS
  make
 cp /opt/hotspot/MMDVMHost/linux/DMRIDUpdate.sh /usr/bin/DMRIDUpdate.sh
@@ -494,12 +501,16 @@ echo 'MMDVMHOST OK :'
 
 #######  DMRGATEWAY
 cd /opt/hotspot/
-git clone https://github.com/g4klx/DMRGateway.git
+GIT2="$GITDMRGateway.git"
+git clone $GIT2
+#git clone https://github.com/g4klx/DMRGateway.git
 cd /opt/hotspot/DMRGateway/
 sed -i "22s/.*/$ver/" /opt/hotspot/DMRGateway/Version.h
  make
 echo 'DMRGATEWAY OK :'
 
+
+#################################   FALTA EN EL GITHUB
 #########  APRS GATEWAY
 cd /opt/hotspot/
 git clone https://github.com/g4klx/APRSGateway.git
@@ -510,7 +521,9 @@ echo 'APRSGATEWAY OK :'
 
 ##### YSF
 cd /opt/hotspot/
-git clone https://github.com/g4klx/YSFClients.git
+GIT2="$GITYSFClients.git"
+git clone $GIT2
+#git clone https://github.com/g4klx/YSFClients.git
 cd /opt/hotspot/YSFClients/YSFGateway/
 sed -i "22s/.*/$ver/" /opt/hotspot/YSFClients/YSFGateway/Version.h
  make
@@ -518,7 +531,9 @@ echo 'YSFGATEWAY OK :'
 
 ###### P25
 cd /opt/hotspot/
-git clone https://github.com/g4klx/P25Clients.git
+GIT2="$GITP25Clients.git"
+git clone $GIT2
+#git clone https://github.com/g4klx/P25Clients.git
 cd /opt/hotspot/P25Clients/P25Gateway/
 sed -i "22s/.*/$ver/" /opt/hotspot/P25Clients/P25Gateway/Version.h
  make
@@ -526,7 +541,9 @@ echo 'P25GATEWAY OK :'
 
 ######  NXDN
 cd /opt/hotspot/
-git clone https://github.com/g4klx/NXDNClients.git
+GIT2="$GITNXDNClients.git"
+git clone $GIT2
+#git clone https://github.com/g4klx/NXDNClients.git
 cd /opt/hotspot/NXDNClients/NXDNGateway/
 sed -i "22s/.*/$ver/" /opt/hotspot/NXDNClients/NXDNGateway/Version.h
  make
@@ -538,7 +555,9 @@ echo 'NXDNGATEWAY OK :'
 
 ####  DMR2NXDN
 cd /opt/hotspot/
-git clone https://github.com/juribeparada/MMDVM_CM.git
+GIT2="$GITMMDVM_CM.git"
+git clone $GIT2
+#git clone https://github.com/juribeparada/MMDVM_CM.git
 cd /opt/hotspot/MMDVM_CM/DMR2NXDN/
 sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/DMR2NXDN/Version.h
  make
