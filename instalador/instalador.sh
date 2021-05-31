@@ -6,6 +6,7 @@
 export NCURSES_NO_UTF8_ACS=1
 EASY_CONF_FILE="/tmp/Easy_Conf_File"
 GIT="https://github.com/nuestraspruebas/"
+RAW="https://raw.githubusercontent.com/nuestraspruebas/beta/"
 #/etc/systemd/system.conf:
 #DefaultTimeoutStartSec=90s
 #DefaultTimeoutStopSec=90s
@@ -46,7 +47,11 @@ sed -i "28s/.*/bind-address = 0.0.0.0/" $PATHDB
 }
 
 function RECUPERA-BD(){
-mysql -h localhost -u root -p@^@^@^@^ hblink < /dev/shmz/dvlink.sql
+
+
+#wget https://raw.githubusercontent.com/nuestraspruebas/beta/main/bd/dvlink.sql -O /tmp/dvlink.sql
+RAW2=$RAW"main/bd/dvlink.sql -O /tmp/dvlink.sql"
+mysql -h localhost -u root -p@^@^@^@^ hblink < /tmp/dvlink.sql
 sleep 5
 }
 
@@ -85,8 +90,8 @@ if [[ $TTYD = "1" ]]
 then
 cd /opt/
 echo "instala ttyd"
-GIT="$GITttyd.git"
-git clone $GIT
+GIT2=$GIT"$GITttyd.git"
+git clone $GIT2
 cd /opt/ttyd && mkdir build && cd build
 cmake ..
 make && make install
@@ -123,6 +128,7 @@ chmod +x /usr/bin/trans.sh
 function COPIAR_RESTO_DE_ARCHIVOS(){
 
 #ACTIVACIONES DEL MENU POR SI SE HACEN PARCIALES LAS INSTALACIONES
+
 cp /dev/shmz/bin/actdv /usr/bin
 chmod +x /usr/bin/actdv
 cp /dev/shmz/bin/acthb /usr/bin
@@ -202,7 +208,10 @@ systemctl start dns.service
 function MODIFICAR_MARIADB(){
 systemctl stop mariadb.service
 systemctl disable mariadb.service
-cp /dev/shmz/servicios/mariadb.service /etc/systemd/system
+#https://raw.githubusercontent.com/nuestraspruebas/beta/main/servicios/mariadb.service
+RAW2=$RAW"main/servicios/mariadb.service -O /tmp/mariadb.service"
+wget $RAW2
+cp /tmp/mariadb.service /etc/systemd/system
 systemctl daemon-reload
 systemctl enable mariadb.service
 systemctl start mariadb.service
@@ -281,148 +290,71 @@ sed -i "s#/opt/Web_Proxy/proxy.js 8080 2222#/opt/Web_Proxy/proxy.js 8010 2210#g"
 }
 
 
-
-function HBLINK(){
+function INSTALA_HBLINK(){
 apt install -y lighttpd
-distribution=$(uname -m)
-if [ $distribution == "armv6l" ]
-then
-  if dialog --title "Instalacion VPS"  --yesno "Has seleccionado instalar HBLINK y tienes una pi Zero o similar. No se recomienda en esta maquina por su poca potencia. Estas seguro de continuar???" 0 0 ;then
 #Borra las carpetas por si se quiere reinstalar
-     rm -r /opt/hblink3 > /dev/null 2>&1
-     rm -r /opt/HBmonitor > /dev/null 2>&1
-     rm -r /opt/dmr_utils3 > /dev/null 2>&1
+rm -r /opt/hblink3 > /dev/null 2>&1
+rm -r /opt/HBmonitor > /dev/null 2>&1
+rm -r /opt/dmr_utils3 > /dev/null 2>&1
 #instala dmrutils3
-     cd /opt
+cd /opt
 GIT2=$GIT"dmr_utils3.git"
 git clone $GIT2
-
-echo $GIT2
-sleep 10
-cd /opt/
- git clone $GIT2
-#git clone https://github.com/HBLink-org/dmr_utils3.git
 apt-get install python3-pip -y
 pip3 install --upgrade .
 /usr/bin/python3 -m pip install --upgrade pip
 #instala hblink
 GIT2=$GIT"hblink3.git"
-     cd /opt
+cd /opt
 git clone $GIT2
-#     git clone https://github.com/ea5gvk/hblink3DVS1
-#     mv hblink3DVS1 hblink3
-     chmod +x /opt/hblink3/install.sh
-     ./install.sh
+chmod +x /opt/hblink3/install.sh
+/opt/hblink3/install.sh
 #instala hbmonitor
-     cd /opt
-GIT2=$GIT"HBmonitor.git"
+cd /opt
+GIT2=$GIT"HBmonitor.git hbmonitor"
 git clone $GIT2
-#     git clone https://github.com/ea5gvk/HBmonitorDVS.git
-     mv HBmonitor hbmonitor
-     chmod +x /opt/hbmonitor/install.sh
-     cd /opt/hbmonitor
-     ./install.sh
-     wget https://database.radioid.net/static/rptrs.json
-     cp rptrs.json peer_ids.json
-     wget https://database.radioid.net/static/users.json
-     cp users.json subscriber_ids.json
-     cp /opt/hbmonitor/peer_ids.json /opt/hblink3/peer_ids.json
-     cp /opt/hbmonitor/subscriber_ids.json /opt/hblink3/subscriber_ids.json
-
-#     cp /dev/shmz/servicios/hbmonrun /usr/bin/hbmonrun
-#     chmod +x /usr/bin/hbmonrun
-#     cp /dev/shmz/servicios/resethb /usr/bin/resethb
-#     chmod +x /usr/bin/resethb
-
+chmod +x /opt/hbmonitor/install.sh
+/opt/hbmonitor/install.sh
+wget https://database.radioid.net/static/rptrs.json -O /opt/hbmonitor/peer_ids.json
+wget https://database.radioid.net/static/users.json -O /opt/hbmonitor/subscriber_ids.json
+cp /opt/hbmonitor/peer_ids.json /opt/hblink3/peer_ids.json
+cp /opt/hbmonitor/subscriber_ids.json /opt/hblink3/subscriber_ids.json
 #instala servicios
+RAW2=$RAW"main/servicios/hblink3.service -O /tmp/hblink3.service"
+wget $RAW2
+cp /tmp/hblink3.service /etc/systemd/system
+RAW2=$RAW"main/servicios/hbparrot.service -O /tmp/hbparrot.service"
+wget $RAW2
+cp /tmp/hbparrot.service /etc/systemd/system
+sed -i "9s/.*/WEB_SERVER_PORT = 8081/" /opt/hbmonitor/config.py
+#activa servicios
+systemctl daemon-reload
+systemctl enable hblink3.service
+systemctl start hblink3.service
+systemctl enable hbparrot.service
+systemctl start hbparrot.service
+RAW2=$RAW"main/servicios/hbmonrun.service -O /tmp/hbmonrun.service"
+wget $RAW2
+cp /tmp/hbmonrun.service /etc/systemd/system
+RAW2=$RAW"main/servicios/hbmonrun -O /tmp/hbmonrun"
+wget $RAW2
+cp /tmp/hbmonrun /usr/bin/hbmonrun
+chmod +x /usr/bin/hbmonrun
+systemctl daemon-reload
+systemctl enable hbmonrun.service
+systemctl start hbmonrun.service
+}
 
-#     cp /dev/shmz/servicios/hblink3.service /etc/systemd/system/
-#     cp /dev/shmz/servicios/hbparrot.service /etc/systemd/system/
-     #cambia puerto hbmonitor a 8081
-     sed -i "9s/.*/WEB_SERVER_PORT = 8081/" /opt/hbmonitor/config.py
-     #activa servicios
-     systemctl daemon-reload
-     systemctl enable hblink3.service
-     systemctl start hblink3.service
-     systemctl enable hbparrot.service
-     systemctl start hbparrot.service
-
-#     cp /dev/shmz/servicios/hbmonrun.service /etc/systemd/system/hbmonrun.service
-     systemctl daemon-reload
-     systemctl enable hbmonrun.service
-     systemctl start hbmonrun.service
-     chmod +x /usr/bin/hbmonrun
+function HBLINK(){
+distribution=$(uname -m)
+if [ $distribution == "armv6l" ]
+then
+  if dialog --title "Instalacion VPS"  --yesno "Has seleccionado instalar HBLINK y tienes una pi Zero o similar. No se recomienda en esta maquina por su poca potencia. Estas seguro de continuar???" 0 0 ;then
+     INSTALA_HBLINK
   fi
 else
-#Borra las carpetas por si se quiere reinstalar
-     rm -r /opt/hblink3 > /dev/null 2>&1
-     rm -r /opt/HBmonitor > /dev/null 2>&1
-     rm -r /opt/dmr_utils3 > /dev/null 2>&1
-#instala dmrutils3
-
-GIT2=$GIT"dmr_utils3.git"
-cd /opt/
- git clone $GIT2
-#    git clone https://github.com/HBLink-org/dmr_utils3.git
-#     mv /dev/shmz/dmr_utils3 /opt
-     apt-get install python3-pip -y
-     pip3 install --upgrade .
-#instala hblink
- GIT2=$GIT"hblink3.git"
-     cd /opt
-git clone $GIT2
-
-
-#    git clone https://github.com/ea5gvk/hblink3DVS1
-#     mv /dev/shmz/hblink3DVS1 /opt/hblink3
-#     mv hblink3DVS1 hblink3
-     chmod +x /opt/hblink3/install.sh
-     ./install.sh
-#instala hbmonitor
-     cd /opt
-GIT2=$GIT"HBmonitor.git"
-git clone $GIT2
-#     git clone https://github.com/ea5gvk/HBmonitorDVS.git
-     mv HBmonitor hbmonitor
-
-#     cd /opt
-#    git clone https://github.com/ea5gvk/HBmonitorDVS.git
-#   mv /dev/shmz/HBmonitorDVS /opt/hbmonitor
-#    mv HBmonitorDVS hbmonitor
-     chmod +x /opt/hbmonitor/install.sh
-     cd /opt/hbmonitor
-     ./install.sh
-     wget https://database.radioid.net/static/rptrs.json
-     cp rptrs.json peer_ids.json
-     wget https://database.radioid.net/static/users.json
-     cp users.json subscriber_ids.json
-     cp /opt/hbmonitor/peer_ids.json /opt/hblink3/peer_ids.json
-     cp /opt/hbmonitor/subscriber_ids.json /opt/hblink3/subscriber_ids.json
-
-     cp /dev/shmz/servicios/hbmonrun /usr/bin/hbmonrun
-     chmod +x /usr/bin/hbmonrun
-     cp /dev/shmz/servicios/resethb /usr/bin/resethb
-     chmod +x /usr/bin/resethb
-
-#instala servicios
-     cp /dev/shmz/servicios/hblink3.service /etc/systemd/system/
-     cp /dev/shmz/servicios/hbparrot.service /etc/systemd/system/
-     #cambia puerto hbmonitor a 8081
-     sed -i "9s/.*/WEB_SERVER_PORT = 8081/" /opt/hbmonitor/config.py
-     #activa servicios
-     systemctl daemon-reload
-     systemctl enable hblink3.service
-     systemctl start hblink3.service
-     systemctl enable hbparrot.service
-     systemctl start hbparrot.service
-
-     cp /dev/shmz/servicios/hbmonrun.service /etc/systemd/system/hbmonrun.service
-     systemctl daemon-reload
-     systemctl enable hbmonrun.service
-     systemctl start hbmonrun.service
-     chmod +x /usr/bin/hbmonrun
+     INSTALA_HBLINK
 fi
-
 }
 
 ##############################
@@ -671,21 +603,22 @@ else
    then
       dialog --title "Easy DVLink" --msgbox "Ha seleccionado instalacionen VPS. Se usara IP publica" 0 0
    fi
-   if dialog --title "Instalacion VPS"  --yesno "Va a comenzar la instalacion de JOSE-DVLINK. Esta seguro?" 0 0 ;then
-     if [[ $DV == "SI/YES" ]]
-     then
-         INSTALA-SOFTWARE
-         INSTALA-DVSWITCH
-         COPIALOSSCRIPTSASUSITIO
-         COPIAR_DE_GITHUB
-         CARPETAS
-         INSTALA-MYSQL
-         RECUPERA-BD
-         MODIFICAR_MARIADB
-         COPIAR_RESTO_DE_ARCHIVOS
-         COMPILADOS
+   if dialog --title "Instalacion VPS"  --yesno "Va a comenzar la instalacion de EASY-DVLINK. Esta seguro?" 0 0 ;then
+     INSTALA-SOFTWARE
 
-      fi
+     #if [[ $DV == "SI/YES" ]]
+     #then
+     #    INSTALA-SOFTWARE
+     #    INSTALA-DVSWITCH
+     #    COPIALOSSCRIPTSASUSITIO
+     #    COPIAR_DE_GITHUB
+     #    CARPETAS
+     #    INSTALA-MYSQL
+     #    RECUPERA-BD
+     #    MODIFICAR_MARIADB
+     #    COPIAR_RESTO_DE_ARCHIVOS
+     #    COMPILADOS
+     # fi
 
       if [[ $TTYD == "SI/YES" ]]
       then
@@ -696,14 +629,14 @@ else
          if [[ $DV == "NO" ]] && [[ $HOT == "NO" ]]
          then
           echo "entra en el if de solo hblink"
-          INSTALA-SOFTWARE
-          COPIALOSSCRIPTSASUSITIO
-          COPIAR_DE_GITHUB
+          #INSTALA-SOFTWARE
+          #COPIALOSSCRIPTSASUSITIO
+          #COPIAR_DE_GITHUB
           INSTALA-MYSQL
           RECUPERA-BD
           MODIFICAR_MARIADB
-          COPIAR_RESTO_DE_ARCHIVOS
-          COMPILADOS
+          #COPIAR_RESTO_DE_ARCHIVOS
+          #COMPILADOS
           HBLINK
         else
           HBLINK
@@ -716,14 +649,14 @@ else
         if [[ $DV == "NO" ]] && [[ $HB == "NO" ]]
         then
           echo "entra en el if de solo hotspots"
-          INSTALA-SOFTWARE
+          #INSTALA-SOFTWARE
           COPIALOSSCRIPTSASUSITIO
-          COPIAR_DE_GITHUB
+          #COPIAR_DE_GITHUB
           INSTALA-MYSQL
           RECUPERA-BD
           MODIFICAR_MARIADB
-          COPIAR_RESTO_DE_ARCHIVOS
-          COMPILADOS
+          #COPIAR_RESTO_DE_ARCHIVOS
+          #COMPILADOS
           HOTSPOTS
           distribucion=$(uname -m)
           if [ $distribucion == "armv6l" ]
