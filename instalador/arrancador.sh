@@ -2,6 +2,7 @@
 #/bin/bash
 export NCURSES_NO_UTF8_ACS=1
 EASY_CONF_FILE="/tmp/Easy_Conf_File"
+CONF_FILE="/etc/scripts/Conf_File"
 GIT="raw.githubusercontent.com/nuestraspruebas/beta"
 
 function INTRO(){
@@ -46,6 +47,10 @@ done
 }
 function CONFIGURA (){
 
+if [ -f $CONF_FILE ];
+then
+    cp $CONF_FILE $EASY_CONF_FILE
+fi
 if [ -f $EASY_CONF_FILE ];
 then
 VPS=$(awk 'NR==1' $EASY_CONF_FILE)

@@ -5,6 +5,7 @@
 ##################################################################
 export NCURSES_NO_UTF8_ACS=1
 EASY_CONF_FILE="/tmp/Easy_Conf_File"
+CONF_FILE="/etc/scripts/Conf_File"
 GIT="https://github.com/nuestraspruebas/"
 RAW="https://raw.githubusercontent.com/nuestraspruebas/beta/"
 #/etc/systemd/system.conf:
@@ -83,6 +84,12 @@ apt-get install -y git-core libi2c-dev multitail sshpass gnupg gnupg2 git
 #chmod +x /dev/shmz/dmr-utils3#/install.sh
 #/dev/shmz/dmr-utils3#/install.sh
 
+}
+function DESINSTALA_TTYD(){
+rm -r /opt/ttyd
+systemctl stop $PATHTTYD
+systemctl disable $PATHTTYD
+rm $PATHTTYD
 }
 
 function INSTALA-TTYD(){
@@ -218,6 +225,10 @@ systemctl start mariadb.service
 
 }
 
+function DESINSTALA_DVSWITCH(){
+apt remove -y dvswitch-server
+
+}
 
 function INSTALA-DVSWITCH(){
 rm /etc/apt/sources.list.d/dvswitch.list
@@ -290,18 +301,32 @@ sed -i "s#/opt/Web_Proxy/proxy.js 8080 2222#/opt/Web_Proxy/proxy.js 8010 2210#g"
 }
 
 
-function INSTALA_HBLINK(){
-apt install -y lighttpd
+function DESINSTALA_HBLINK(){
+
 #Borra las carpetas por si se quiere reinstalar
 rm -r /opt/hblink3 > /dev/null 2>&1
 rm -r /opt/HBmonitor > /dev/null 2>&1
 rm -r /opt/dmr_utils3 > /dev/null 2>&1
+systemctl stop hblink3.service
+systemctl disable hblink3.service
+systemctl stop hbparrot.service
+systemctl disable hbparrot.service
+
+}
+
+function INSTALA_HBLINK(){
+apt install -y lighttpd
+#Borra las carpetas por si se quiere reinstalar
+#rm -r /opt/hblink3 > /dev/null 2>&1
+#rm -r /opt/HBmonitor > /dev/null 2>&1
+#rm -r /opt/dmr_utils3 > /dev/null 2>&1
 #instala dmrutils3
 cd /opt
 GIT2=$GIT"dmr_utils3.git"
 git clone $GIT2
 apt-get install python3-pip -y
 pip3 install --upgrade .
+pip install -r /opt/hblink3/requirements.txt
 /usr/bin/python3 -m pip install --upgrade pip
 #instala hblink
 GIT2=$GIT"hblink3.git"
@@ -345,6 +370,9 @@ systemctl enable hbmonrun.service
 systemctl start hbmonrun.service
 }
 
+
+
+
 function HBLINK(){
 distribution=$(uname -m)
 if [ $distribution == "armv6l" ]
@@ -359,18 +387,12 @@ fi
 
 ##############################
 
-function HOTSPOTS(){
-if [ ! -d /opt/hotspot ]
-then
- if dialog --title "HOTSPOTS"  --yesno "Reinstalar Hotspots?" 0 0 ;then
-  rm -r /opt/hotspot
-  rm -r /opt/HOTSPOTS-ACTIVOS
-  rm -r /opt/fw
-  INSTALA_HOTSPOTS
- fi
-fi
-
+function DESINSTALA_HOTSPOT(){
+rm -r /opt/hotspot
+rm -r /opt/HOTSPOTS-ACTIVOS
+rm -r /opt/fw
 }
+
 
 function INSTALA_HOTSPOTS(){
 
@@ -583,24 +605,84 @@ echo "spidev" >> /etc/modules
 
 }
 
+function ESTADO(){
+if [ -f $CONF_FILE ];
+then
+    VPSI=$(awk 'NR==1' $CONF_FILE)
+    if [[ $VPS == "VPSI" ]]
+    then
+        if [[ $VPS == "SI/YES" ]]
+        then
+            VPS="R"
+        else
+            VPS="D"
+        fi
+    fi
+    TTYDI=$(awk 'NR==2' $CONF_FILE)
+    if [[ $TTYD == "TTYDI" ]]
+    then
+        if [[ $TTYD == "SI/YES" ]]
+        then
+            DESINSTALA_TTYD
+        fi
+     fi
+    DVSWITCHI=$(awk 'NR==3' $CONF_FILE)
+    if [[ $DVSWITCH == "DVSWITCHI" ]]
+    then
+        if [[ $DVSWITCH == "SI/YES" ]]
+        then
+            DESINSTALA_DVSWITCH
+        fi
+     fi
+    HBLINKI=$(awk 'NR==4' $CONF_FILE)
+    if [[ $HBLINK == "HBLINKI" ]]
+    then
+        if [[ $HBLINK == "SI/YES" ]]
+        then
+            DESINSTALA_HBLINK
+        fi
+     fi
+    HOTSPOTI=$(awk 'NR==5' $CONF_FILE)
+    if [[ $HOTSPOT == "HOTSPOTI" ]]
+    then
+        if [[ $HOTSPOT == "SI/YES" ]]
+        then
+            DESINSTALA_HOTSPOT
+        fi
+     fi
+
+else if [ ! -f $EASY_CONF_FILE ]
+then
+   dialog --title "Easy DVLink" --msgbox "No has configurado Easy DVLink. Configurelo y vuelva a intentarlo" 0 0
+else
+   VPS=$(awk 'NR==1' $EASY_CONF_FILE)
+   TTYD=$(awk 'NR==2' $EASY_CONF_FILE)
+   DV=$(awk 'NR==3' $EASY_CONF_FILE)
+   HB=$(awk 'NR==4' $EASY_CONF_FILE)
+   HOT=$(awk 'NR==5' $EASY_CONF_FILE)
+   cp $EASY_CONF_FILE $CONF_FILE
+fi
+fi
+
+
+}
+
 #######  INICIO INSTALADOR  #########
 #tar xvf /dev/carpetoncio -C /dev/
 #clear
-if [ ! -f $EASY_CONF_FILE ]
-then
- dialog --title "Easy DVLink" --msgbox "No has configurado Easy DVLink. Configurelo y vuelva a intentarlo" 0 0
-else
-   if [[ $VPS = "SI/YES" ]]
+ESTADO
+    if [[ $VPS = "SI/YES" ]]
    then
       dialog --title "Easy DVLink" --msgbox "Ha seleccionado instalacionen VPS. Se usara IP publica" 0 0
    fi
    if dialog --title "Instalacion VPS"  --yesno "Va a comenzar la instalacion de EASY-DVLINK. Esta seguro?" 0 0 ;then
+     
      INSTALA-SOFTWARE
 
      #if [[ $DV == "SI/YES" ]]
      #then
      #    INSTALA-SOFTWARE
-     #    INSTALA-DVSWITCH
+         INSTALA-DVSWITCH
      #    COPIALOSSCRIPTSASUSITIO
      #    COPIAR_DE_GITHUB
      #    CARPETAS
@@ -641,14 +723,14 @@ else
         then
           echo "entra en el if de solo hotspots"
           #INSTALA-SOFTWARE
-          COPIALOSSCRIPTSASUSITIO
+          #COPIALOSSCRIPTSASUSITIO
           #COPIAR_DE_GITHUB
           INSTALA-MYSQL
           RECUPERA-BD
           MODIFICAR_MARIADB
           #COPIAR_RESTO_DE_ARCHIVOS
           #COMPILADOS
-          HOTSPOTS
+          INSTALA_HOTSPOTS
           distribucion=$(uname -m)
           if [ $distribucion == "armv6l" ]
           then
@@ -661,7 +743,7 @@ else
              dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
           fi
        else
-	  HOTSPOTS
+	  INSTALA_HOTSPOTS
           if [ $distribucion == "armv6l" ]
           then
              ARM
