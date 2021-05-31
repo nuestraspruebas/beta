@@ -360,11 +360,22 @@ fi
 ##############################
 
 function HOTSPOTS(){
+if [ ! -d /opt/hotspot ]
+then
+ if dialog --title "HOTSPOTS"  --yesno "Reinstalar Hotspots?" 0 0 ;then
+  rm -r /opt/hotspot
+  rm -r /opt/HOTSPOTS-ACTIVOS
+  rm -r /opt/fw
+  INSTALA_HOTSPOTS
+ fi
+fi
+
+}
+
+function INSTALA_HOTSPOTS(){
 
 mkdir /opt/hotspot
 mkdir /opt/HOTSPOTS-ACTIVOS/
-
-
 mkdir /opt/fw/ 
 cd /opt/fw/
 git clone https://github.com/jabanos/STM32F10X_Lib.git
@@ -374,23 +385,17 @@ git clone https://github.com/jabanos/fw1.4.17.git
 cd /opt/
 GIT2=$GIT"P25Clients.git"
 git clone $GIT2
-
-#git clone https://github.com/g4klx/P25Clients.git
 cd /opt/P25Clients/P25Gateway/
 sed -i "22s/.*/$ver/" /opt/P25Clients/P25Gateway/Version.h
- make
- systemctl daemon-reload
- systemctl enable p25gateway.service
+make
+systemctl daemon-reload
+systemctl enable p25gateway.service
 echo 'P25 OK :'
 
 ##### YSF
-#cd /opt
-#git clone https://github.com/g4klx/YSFClients.git
 cd /opt/
 GIT2=$GIT"YSFClients.git"
 git clone $GIT2
-#mkdir /opt/YSFClients
-#mv /shmz/YSFGateway/ /opt/YSFClients/
 cd /opt/YSFClients/YSFGateway/
 make clean
 sed -i "22s/.*/$ver/" /opt/YSFClients/YSFGateway/Version.h
@@ -401,36 +406,29 @@ echo 'YSF OK :'
 cd /opt
 GIT2=$GIT"NXDNClients.git"ç
 git clone $GIT2
-#git clone https://github.com/g4klx/NXDNClients.git
 cd /opt/NXDNClients/NXDNGateway/
 sed -i "22s/.*/$ver/" /opt/NXDNClients/NXDNGateway/Version.h
- make
- systemctl daemon-reload
- systemctl enable p25gateway.service
+make
+systemctl daemon-reload
+systemctl enable p25gateway.service
 echo 'NXDN OK :'
 
-#############################################################    HOTSPOTS  #######################################################
-
-######  MMDVMHOST    ###############################################################################################################################
-
-
-mkdir /opt/hotspot
-cd /opt/hotspot/
+####  MMDVMHOST 
+3mkdir /opt/hotspot
+#cd /opt/hotspot/
 GIT2=$GIT"MMDVMHost.git"
 git clone $GIT2
-
-#git clone https://github.com/g4klx/MMDVMHost.git
 cd /opt/hotspot/MMDVMHost/
 sed -i "22s/.*/$ver/" /opt/hotspot/MMDVMHost/Version.h
 
 #cp /dev/shmz/mmdvm/Display.cpp /opt/hotspot/MMDVMHost/Display.cpp
 #cp /dev/shmz/mmdvm/num /usr/bin/
 #cp /dev/shmz/mmdvm/num2 /usr/bin/
-
 #chmod +x /usr/bin/num
 #chmod +x /usr/bin/num2
-mkdir /opt/HOTSPOTS-ACTIVOS
- make
+
+#mkdir /opt/HOTSPOTS-ACTIVOS
+make
 cp /opt/hotspot/MMDVMHost/linux/DMRIDUpdate.sh /usr/bin/DMRIDUpdate.sh
 sed -i "s#/path/to/DMR/ID/file#/opt/hotspot/MMDVMHost#g" "/usr/bin/DMRIDUpdate.sh"
 chmod +x /usr/bin/DMRIDUpdate.sh
@@ -441,10 +439,9 @@ echo 'MMDVMHOST OK :'
 cd /opt/hotspot/
 GIT2=$GIT"DMRGateway.git"
 git clone $GIT2
-#git clone https://github.com/g4klx/DMRGateway.git
 cd /opt/hotspot/DMRGateway/
 sed -i "22s/.*/$ver/" /opt/hotspot/DMRGateway/Version.h
- make
+make
 echo 'DMRGATEWAY OK :'
 
 
@@ -456,35 +453,31 @@ sed -i "22s/.*/$ver/" /opt/hotspot/APRSGateway/Version.h
 make
 echo 'APRSGATEWAY OK :'
 
-
 ##### YSF
 cd /opt/hotspot/
 GIT2=$GIT"YSFClients.git"
 git clone $GIT2
-#git clone https://github.com/g4klx/YSFClients.git
 cd /opt/hotspot/YSFClients/YSFGateway/
 sed -i "22s/.*/$ver/" /opt/hotspot/YSFClients/YSFGateway/Version.h
- make
+make
 echo 'YSFGATEWAY OK :'
 
 ###### P25
 cd /opt/hotspot/
 GIT2=$GIT"P25Clients.git"
 git clone $GIT2
-#git clone https://github.com/g4klx/P25Clients.git
 cd /opt/hotspot/P25Clients/P25Gateway/
 sed -i "22s/.*/$ver/" /opt/hotspot/P25Clients/P25Gateway/Version.h
- make
+make
 echo 'P25GATEWAY OK :'
 
 ######  NXDN
 cd /opt/hotspot/
 GIT2=$GIT"NXDNClients.git"
 git clone $GIT2
-#git clone https://github.com/g4klx/NXDNClients.git
 cd /opt/hotspot/NXDNClients/NXDNGateway/
 sed -i "22s/.*/$ver/" /opt/hotspot/NXDNClients/NXDNGateway/Version.h
- make
+make
 echo 'NXDNGATEWAY OK :'
 
 
@@ -495,44 +488,42 @@ echo 'NXDNGATEWAY OK :'
 cd /opt/hotspot/
 GIT2=$GIT"MMDVM_CM.git"
 git clone $GIT2
-#git clone https://github.com/juribeparada/MMDVM_CM.git
 cd /opt/hotspot/MMDVM_CM/DMR2NXDN/
 sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/DMR2NXDN/Version.h
- make
+make
 echo 'DMR2NXDN OK :'
 
 ###  DMR2YSF
 cd /opt/hotspot/MMDVM_CM/DMR2YSF/
 sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/DMR2YSF/Version.h
- make
+make
 echo 'DMR2YSF OK :'
 
 ####   NXDN2DMR
 cd /opt/hotspot/MMDVM_CM/NXDN2DMR/
 sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/NXDN2DMR/Version.h
- make
+make
 echo 'NXDN2DMR OK :'
 
 ####   YSF2DMR
 
 cd /opt/hotspot/MMDVM_CM/YSF2DMR/
 sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/YSF2DMR/Version.h
- make
+make
 echo 'YSF2DMR OK :'
 
 ####  YSF2NXDN
 
 cd /opt/hotspot/MMDVM_CM/YSF2NXDN/
 sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/YSF2NXDN/Version.h
- make
+make
 echo 'YSF2NXDN OK :'
 
 ####  YSF2P25
 cd /opt/hotspot/MMDVM_CM/YSF2P25
 sed -i "23s/.*/$ver/" /opt/hotspot/MMDVM_CM/YSF2P25/Version.h
- make
+make
 echo 'YSF2P25 OK :'
-
 
 
 }
