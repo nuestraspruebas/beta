@@ -21,7 +21,7 @@ PATHTTYD="/etc/systemd/system/ttydconfig.service"
 DIA=`date +%d`
 MES=`date +%m`
 AÑO=`date +%Y`
-fecha="$año$mes$dia_Easy_DVLink"
+fecha="$AÑO$MES$DIA_Easy_DVLink"
 c="const char* VERSION = "
 d='"'
 ver="$c$d$fecha$d;"
@@ -294,14 +294,19 @@ then
      rm -r /opt/dmr_utils3 > /dev/null 2>&1
 #instala dmrutils3
      cd /opt
-GIT2="$GITdmr_utils3.git"
+GIT2=$GIT"dmr_utils3.git"
+git clone $GIT2
+
+echo $GIT2
+sleep 10
 cd /opt/
  git clone $GIT2
 #git clone https://github.com/HBLink-org/dmr_utils3.git
 apt-get install python3-pip -y
 pip3 install --upgrade .
+/usr/bin/python3 -m pip install --upgrade pip
 #instala hblink
-GIT2="$GIThblink3.git"
+GIT2=$GIT"hblink3.git"
      cd /opt
 git clone $GIT2
 #     git clone https://github.com/ea5gvk/hblink3DVS1
@@ -310,7 +315,7 @@ git clone $GIT2
      ./install.sh
 #instala hbmonitor
      cd /opt
-GIT2="$GITHBmonitor.git"
+GIT2=$GIT"HBmonitor.git"
 git clone $GIT2
 #     git clone https://github.com/ea5gvk/HBmonitorDVS.git
      mv HBmonitor hbmonitor
@@ -355,7 +360,7 @@ else
      rm -r /opt/dmr_utils3 > /dev/null 2>&1
 #instala dmrutils3
 
-GIT2="$GITdmr_utils3.git"
+GIT2=$GIT"dmr_utils3.git"
 cd /opt/
  git clone $GIT2
 #    git clone https://github.com/HBLink-org/dmr_utils3.git
@@ -363,7 +368,7 @@ cd /opt/
      apt-get install python3-pip -y
      pip3 install --upgrade .
 #instala hblink
- GIT2="$GIThblink3.git"
+ GIT2=$GIT"hblink3.git"
      cd /opt
 git clone $GIT2
 
@@ -375,7 +380,7 @@ git clone $GIT2
      ./install.sh
 #instala hbmonitor
      cd /opt
-GIT2="$GITHBmonitor.git"
+GIT2=$GIT"HBmonitor.git"
 git clone $GIT2
 #     git clone https://github.com/ea5gvk/HBmonitorDVS.git
      mv HBmonitor hbmonitor
@@ -435,8 +440,9 @@ git clone https://github.com/jabanos/fw1.4.17.git
 
 ###### P25
 cd /opt/
-GIT2="$GITP25Clients.git"
+GIT2=$GIT"P25Clients.git"
 git clone $GIT2
+
 #git clone https://github.com/g4klx/P25Clients.git
 cd /opt/P25Clients/P25Gateway/
 sed -i "22s/.*/$ver/" /opt/P25Clients/P25Gateway/Version.h
@@ -449,7 +455,7 @@ echo 'P25 OK :'
 #cd /opt
 #git clone https://github.com/g4klx/YSFClients.git
 cd /opt/
-GIT2="$GITYSFClients.git"
+GIT2=$GIT"YSFClients.git"
 git clone $GIT2
 #mkdir /opt/YSFClients
 #mv /shmz/YSFGateway/ /opt/YSFClients/
@@ -461,7 +467,7 @@ echo 'YSF OK :'
 
 ######  NXDN
 cd /opt
-GIT2="$GITNXDNClients.git"ç
+GIT2=$GIT"NXDNClients.git"ç
 git clone $GIT2
 #git clone https://github.com/g4klx/NXDNClients.git
 cd /opt/NXDNClients/NXDNGateway/
@@ -478,7 +484,7 @@ echo 'NXDN OK :'
 
 mkdir /opt/hotspot
 cd /opt/hotspot/
-GIT2="$GITMMDVMHost.git"
+GIT2=$GIT"MMDVMHost.git"
 git clone $GIT2
 
 #git clone https://github.com/g4klx/MMDVMHost.git
@@ -501,7 +507,7 @@ echo 'MMDVMHOST OK :'
 
 #######  DMRGATEWAY
 cd /opt/hotspot/
-GIT2="$GITDMRGateway.git"
+GIT2=$GIT"DMRGateway.git"
 git clone $GIT2
 #git clone https://github.com/g4klx/DMRGateway.git
 cd /opt/hotspot/DMRGateway/
@@ -521,7 +527,7 @@ echo 'APRSGATEWAY OK :'
 
 ##### YSF
 cd /opt/hotspot/
-GIT2="$GITYSFClients.git"
+GIT2=$GIT"YSFClients.git"
 git clone $GIT2
 #git clone https://github.com/g4klx/YSFClients.git
 cd /opt/hotspot/YSFClients/YSFGateway/
@@ -531,7 +537,7 @@ echo 'YSFGATEWAY OK :'
 
 ###### P25
 cd /opt/hotspot/
-GIT2="$GITP25Clients.git"
+GIT2=$GIT"P25Clients.git"
 git clone $GIT2
 #git clone https://github.com/g4klx/P25Clients.git
 cd /opt/hotspot/P25Clients/P25Gateway/
@@ -541,7 +547,7 @@ echo 'P25GATEWAY OK :'
 
 ######  NXDN
 cd /opt/hotspot/
-GIT2="$GITNXDNClients.git"
+GIT2=$GIT"NXDNClients.git"
 git clone $GIT2
 #git clone https://github.com/g4klx/NXDNClients.git
 cd /opt/hotspot/NXDNClients/NXDNGateway/
@@ -555,7 +561,7 @@ echo 'NXDNGATEWAY OK :'
 
 ####  DMR2NXDN
 cd /opt/hotspot/
-GIT2="$GITMMDVM_CM.git"
+GIT2=$GIT"MMDVM_CM.git"
 git clone $GIT2
 #git clone https://github.com/juribeparada/MMDVM_CM.git
 cd /opt/hotspot/MMDVM_CM/DMR2NXDN/
