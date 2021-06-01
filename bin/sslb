@@ -14,3 +14,27 @@ NO
 
 
 RESUMIRINSTALACION
+
+VERSIONPI=$(awk 'NR==2' /etc/sslb)
+IDIOMA="lenguajeactivo"
+CONGELADO=$(awk 'NR==4' /etc/sslb)
+XWIN=$(awk 'NR==5' /etc/sslb)
+HBLINK=$(awk 'NR==8' /etc/sslb)
+DVSWITCH=$(awk 'NR==9' /etc/sslb)
+
+USER=$(awk 'NR==1' /etc/sslb)
+
+VERSIONPI=$(awk 'NR==2' /etc/sslb)
+IDIOMA="lenguajeactivo"
+CONGELADO=$(awk 'NR==4' /etc/sslb)
+XWIN=$(awk 'NR==5' /etc/sslb)
+PASSMENU=$(awk 'NR==6' /etc/sslb)
+PRODUCCION=$(awk 'NR==7' /etc/sslb)
+DVSWITCH=$(awk 'NR==8' /etc/sslb)
+HBLINK=$(awk 'NR==9' /etc/sslb)
+HOTSPOT=$(awk 'NR==10' /etc/sslb)
+PATHDVLINK=$(awk 'NR==12' /etc/sslb)
+CONTINUARINSTALACION=$(awk 'NR==16' /etc/sslb)
+
+
+
