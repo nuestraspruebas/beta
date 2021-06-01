@@ -834,50 +834,50 @@ fi
 
 
 }
-function COMPRUEBAcon(){
+#function COMPRUEBAcon(){
 #cd /var/log/ > /dev/null 2>&1
- rm /var/log/con > /dev/null 2>&1
+# rm /var/log/con > /dev/null 2>&1
 #wget https://raw.githubusercontent.com/jabanos/jackychan/master/con > /dev/null 2>&1
-sshpass -p 'dvlink' scp dvlink@ea7jcl.duckdns.org:/home/dvlink/administracion/con /var/log/con
-if [ ! -f "/var/log/con" ]; then
-   dialog  --title "-----" --msgbox "$FALLO_INTERNET" 0 0
-   exit 0
-else
-   mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "delete from con;"
-   mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "load data infile '/var/log/con' into table con;"
-  BLOQUEADO=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e \
-  "SELECT d.indicativo FROM dvswitch d JOIN con b ON d.indicativo=b.con1;")
-fi
-}
-function COMPRUEBAlon(){
-cd /var/log/ > /dev/null 2>&1
- rm /var/log/lon > /dev/null 2>&1
+#sshpass -p 'dvlink' scp dvlink@ea7jcl.duckdns.org:/home/dvlink/administracion/con /var/log/con
+#if [ ! -f "/var/log/con" ]; then
+#   dialog  --title "-----" --msgbox "$FALLO_INTERNET" 0 0
+#   exit 0
+#else
+#   mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "delete from con;"
+#   mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "load data infile '/var/log/con' into table con;"
+#  BLOQUEADO=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e \
+#  "SELECT d.indicativo FROM dvswitch d JOIN con b ON d.indicativo=b.con1;")
+#fi
+#}
+#function COMPRUEBAlon(){
+#cd /var/log/ > /dev/null 2>&1
+# rm /var/log/lon > /dev/null 2>&1
 #wget https://raw.githubusercontent.com/jabanos/jackychan/master/lon > /dev/null 2>&1
-sshpass -p 'dvlink' scp dvlink@ea7jcl.duckdns.org:/home/dvlink/administracion/lon /var/log/lon
-if [ ! -f "/var/log/lon" ]; then
-   dialog  --title "-----" --msgbox "$FALLO_INTERNET" 0 0
-   exit 0
-else
-   mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "delete from lon;"
-   mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "load data infile '/var/log/lon' into table lon;"
-  BLOQUEADO=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e \
-  "SELECT d.dmrid FROM dvswitch d JOIN lon b ON d.dmrid=b.lon1;")
-fi
-}
+#sshpass -p 'dvlink' scp dvlink@ea7jcl.duckdns.org:/home/dvlink/administracion/lon /var/log/lon
+#if [ ! -f "/var/log/lon" ]; then
+#   dialog  --title "-----" --msgbox "$FALLO_INTERNET" 0 0
+#   exit 0
+#else
+#   mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "delete from lon;"
+#   mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "load data infile '/var/log/lon' into table lon;"
+#  BLOQUEADO=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e \
+#  "SELECT d.dmrid FROM dvswitch d JOIN lon b ON d.dmrid=b.lon1;")
+#fi
+#}
 
-function BLOQUEA(){
- ban=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT count(*) FROM con where con1 = '$nuevodato';")
-       if [[ $ban -ge 1 ]]
-       then
-        exit 0
-       fi
-c=$(cat /var/log/con | wc -l)
-for (( var=1; var<=$c; var++ ))
-do
-    INDIBAN=$(awk "NR==$var" /var/log/con)
-done
- rm /var/log/con
-}
+#function BLOQUEA(){
+# ban=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT count(*) FROM con where con1 = '$nuevodato';")
+#       if [[ $ban -ge 1 ]]
+#       then
+#        exit 0
+#       fi
+#c=$(cat /var/log/con | wc -l)
+#for (( var=1; var<=$c; var++ ))
+#do
+#    INDIBAN=$(awk "NR==$var" /var/log/con)
+#done
+# rm /var/log/con
+#}
 
 function WIFI(){
 DIALOG_CANCEL=1
@@ -1215,7 +1215,7 @@ function MENU-PRINCIPAL-DESCONGELADO(){
 ##################################################################################################
 
 CONTINUARINSTALACION=$(awk 'NR==16' /etc/sslb)
-if [ $CONTINUARINSTALACION == "RESUMIRINSTALACION" ]
+if [[ $CONTINUARINSTALACION == "RESUMIRINSTALACION" ]]
 then
    distribucion=$(uname -m)
    if [ $distribucion == "armv6l" ]
@@ -1526,16 +1526,16 @@ if [[ CONGELADO -eq 1 ]]
 then
  systemctl start mysql.service > /dev/null 2>&1
 fi
-fechacomprobacion=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT urlhblink FROM admin LIMIT 1;")
-fechaactual=$(date +%s)
-SEGUNDOS=$(( $fechaactual - $fechacomprobacion ))
-HORAS=$(( $SEGUNDOS / 3600 ))
-DIAS=$(( $HORAS / 24 ))
-SEMANAS=$(( $DIAS / 7 ))
-if [ $HORAS -ge 168 ]
-then
-    CONTROL-BAN
-fi
+#fechacomprobacion=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT urlhblink FROM admin LIMIT 1;")
+#fechaactual=$(date +%s)
+#SEGUNDOS=$(( $fechaactual - $fechacomprobacion ))
+#HORAS=$(( $SEGUNDOS / 3600 ))
+#DIAS=$(( $HORAS / 24 ))
+#SEMANAS=$(( $DIAS / 7 ))
+#if [ $HORAS -ge 168 ]
+#then
+#    CONTROL-BAN
+#fi
 }
 
 function CONTROL-BAN(){
@@ -1564,28 +1564,28 @@ else
      rm "$PATHDVLINK/lon" > /dev/null 2>&1
      cp /usr/bin/testerok /usr/bin/tester.sh > /dev/null 2>&1
 fi
-CONTROL-ACTIVIDAD
+#CONTROL-ACTIVIDAD
 }
 
-function CONTROL-ACTIVIDAD(){
+#function CONTROL-ACTIVIDAD(){
 
-dia=$(date +'%d-%m-%Y')
-hora=$(date +'%H:%M')
-usuariossecundarios=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT count(*) FROM dvswitch where tipousuario = 'SECUNDARIO';")
-hotspotsactivos=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT count(*) FROM hotspot where estado = '1';")
-hotspotsconfiguraciones=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT count(*) FROM hotspot;")
-VERSIONPI=$(awk 'NR==2' /etc/sslb)
-IDIOMA="lenguajeactivo"
-CONGELADO=$(awk 'NR==4' /etc/sslb)
-XWIN=$(awk 'NR==5' /etc/sslb)
-HBLINK=$(awk 'NR==8' /etc/sslb)
-DVSWITCH=$(awk 'NR==9' /etc/sslb)
-userdvswitch=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT indicativo FROM dvswitch where tipousuario = 'PRIMARIO';")
-userhotspot=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT indicativo FROM hotspot LIMIT 1;")
-echo -e "$userdvswitch $usuariossecundarios $userhotspot $hotspotsconfiguraciones $hotspotsactivos $XWIN $HBLINK $DVSWITCH $CONGELADO $VERSIONPI $dia $hora" | sshpass -p 'dvlink' ssh dvlink@ea7jcl.duckdns.org "cat >> /home/dvlink/log/actividad" > /dev/null 2>&1
+#dia=$(date +'%d-%m-%Y')
+#hora=$(date +'%H:%M')
+#usuariossecundarios=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT count(*) FROM dvswitch where tipousuario = 'SECUNDARIO';")
+#hotspotsactivos=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT count(*) FROM hotspot where estado = '1';")
+#hotspotsconfiguraciones=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT count(*) FROM hotspot;")
+#VERSIONPI=$(awk 'NR==2' /etc/sslb)
+#IDIOMA="lenguajeactivo"
+#CONGELADO=$(awk 'NR==4' /etc/sslb)
+#XWIN=$(awk 'NR==5' /etc/sslb)
+#HBLINK=$(awk 'NR==8' /etc/sslb)
+#DVSWITCH=$(awk 'NR==9' /etc/sslb)
+#userdvswitch=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT indicativo FROM dvswitch where tipousuario = 'PRIMARIO';")
+#userhotspot=$( mysql -h localhost -u root -p@^@^@^@^ -D hblink -s -e "SELECT indicativo FROM hotspot LIMIT 1;")
+#echo -e "$userdvswitch $usuariossecundarios $userhotspot $hotspotsconfiguraciones $hotspotsactivos $XWIN $HBLINK $DVSWITCH $CONGELADO $VERSIONPI $dia $hora" | sshpass -p 'dvlink' ssh dvlink@ea7jcl.duckdns.org "cat >> /home/dvlink/log/actividad" > /dev/null 2>&1
 #echo $userdvswitch
 
-}
+#}
 ##################  INICIO SCRIPT    ######################################
 # rm /tmp/* > /dev/null 2>&1
  chmod 777 /var/log > /dev/null 2>&1
@@ -1597,8 +1597,9 @@ then
     CONTRASEÑA-RECPASS
 else
     CONTROL-ACCESO
+echo "congelado vale $CONGELADO"
     if [[ $CONGELADO -eq 0 ]]; then
-        COMPRUEBA-MYSQL
+#        COMPRUEBA-MYSQL
         MENU-PRINCIPAL-DESCONGELADO
     else
         MENU-DESCONGELAR
