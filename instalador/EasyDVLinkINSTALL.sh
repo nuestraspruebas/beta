@@ -2,7 +2,7 @@
 #/bin/bash
 export NCURSES_NO_UTF8_ACS=1
 EASY_CONF_FILE="/tmp/Easy_Conf_File"
-CONF_FILE="/etc/scripts/Conf_File"
+CONF_FILE="/etc/Conf_File"
 GIT="raw.githubusercontent.com/nuestraspruebas/beta/"
 
 function INTRO(){
@@ -99,40 +99,40 @@ menuconfigura=`cat $tempfile`
         if [[ $DVLINK == "NO" ]]
         then
             DVLINK="SI/YES"
-            sed -i "2s#.*#SI/YES#" $EASY_CONF_FILE
+            sed -i "1s#.*#SI/YES#" $EASY_CONF_FILE
         else
             DVLINK="NO"
-            sed -i "2s#.*#NO#" $EASY_CONF_FILE
+            sed -i "1s#.*#NO#" $EASY_CONF_FILE
         fi
         else if [[ $menuconfigura == "Instalar DVSWITCH / Install DVSWITCH" ]]
         then
            if [[ $DVSWITCH == "NO" ]]
            then
                DVSWITCH="SI/YES"
-               sed -i "3s#.*#SI/YES#" $EASY_CONF_FILE
+               sed -i "2s#.*#SI/YES#" $EASY_CONF_FILE
            else
                DVSWITCH="NO"
-               sed -i "3s#.*#NO#" $EASY_CONF_FILE
+               sed -i "2s#.*#NO#" $EASY_CONF_FILE
            fi
            else if [[ $menuconfigura == "Instalar HBLINK / install HBLINK" ]]
            then
                if [[ $HBLINK == "NO" ]]
                then
                    HBLINK="SI/YES"
-                   sed -i "4s#.*#SI/YES#" $EASY_CONF_FILE
+                   sed -i "3s#.*#SI/YES#" $EASY_CONF_FILE
                else
                    HBLINK="NO"
-                   sed -i "4s#.*#NO#" $EASY_CONF_FILE
+                   sed -i "3s#.*#NO#" $EASY_CONF_FILE
                fi
                else if [[ $menuconfigura == "Instalar HOTSPOT / install HOTSPOT" ]]
                then
                    if [[ $HOTSPOT == "NO" ]]
                    then
                        HOTSPOT="SI/YES"
-                       sed -i "5s#.*#SI/YES#" $EASY_CONF_FILE
+                       sed -i "4s#.*#SI/YES#" $EASY_CONF_FILE
                    else
                        HOTSPOT="NO"
-                       sed -i "5s#.*#NO#" $EASY_CONF_FILE
+                       sed -i "4s#.*#NO#" $EASY_CONF_FILE
                    fi
                fi
            fi
