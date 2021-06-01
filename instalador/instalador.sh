@@ -568,7 +568,7 @@ function ESTADO(){
 if [ -f $CONF_FILE ];
 then
     DVLINKI=$(awk 'NR==1' $CONF_FILE)
-    if [[ $DVLINK == "DVLINKI" ]]
+    if [[ $DVLINK == $DVLINKI ]]
     then
         if [[ $DVLINK == "SI/YES" ]]
         then
@@ -576,26 +576,27 @@ then
         fi
     fi
     DVSWITCHI=$(awk 'NR==2' $CONF_FILE)
-    if [[ $DVSWITCH == "DVSWITCHI" ]]
+    if [[ $DV == $DVSWITCHI ]]
     then
-        if [[ $DVSWITCH == "SI/YES" ]]
+        if [[ $DV == "SI/YES" ]]
         then
             DESINSTALA_DVSWITCH
         fi
      fi
     HBLINKI=$(awk 'NR==3' $CONF_FILE)
-    if [[ $HBLINK == "HBLINKI" ]]
+    if [[ $HB == $HBLINKI ]]
     then
-        if [[ $HBLINK == "SI/YES" ]]
+        if [[ $HB == "SI/YES" ]]
         then
             DESINSTALA_HBLINK
         fi
      fi
     HOTSPOTI=$(awk 'NR==4' $CONF_FILE)
-    if [[ $HOTSPOT == "HOTSPOTI" ]]
+    if [[ $HOT == $HOTSPOTI ]]
     then
-        if [[ $HOTSPOT == "SI/YES" ]]
+        if [[ $HOT == "SI/YES" ]]
         then
+            echo "DESINTALA HOTSPOT"
             DESINSTALA_HOTSPOT
         fi
      fi
