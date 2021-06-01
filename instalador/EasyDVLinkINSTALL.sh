@@ -3,7 +3,7 @@
 export NCURSES_NO_UTF8_ACS=1
 EASY_CONF_FILE="/tmp/Easy_Conf_File"
 CONF_FILE="/etc/scripts/Conf_File"
-GIT="raw.githubusercontent.com/nuestraspruebas/beta"
+GIT="raw.githubusercontent.com/nuestraspruebas/beta/"
 
 function INTRO(){
 echo "Menu Configurador by EA7JCL" > /tmp/intro.txt
@@ -162,7 +162,8 @@ wget -P /tmp/ $ruta
 dialog --title "" --textbox /tmp/disclaimer 0 0
 rm -f /tmp/disclaimer > /dev/null 2>&1
 if dialog --title " Iniciamos la instalacion / we started the installation"  --yesno "Esta seguro / Are you sure" 0 0 ;then
-    ruta="$GIT/instalador/instalador.sh"
+#https://raw.githubusercontent.com/nuestraspruebas/beta/main/instalador/instalador.sh
+    ruta=$GIT"main/instalador/instalador.sh"
     wget -P /tmp/ $ruta
     #wget -P /tmp/ https://raw.githubusercontent.com/nuestraspruebas/beta/main/instalador/instalador.sh  > /dev/null 2>&1
     chmod +x /tmp/instalador.sh

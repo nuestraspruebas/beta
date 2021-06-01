@@ -51,7 +51,10 @@ function RECUPERA-BD(){
 
 
 #wget https://raw.githubusercontent.com/nuestraspruebas/beta/main/bd/dvlink.sql -O /tmp/dvlink.sql
+#RAW="https://raw.githubusercontent.com/nuestraspruebas/beta/"
+
 RAW2=$RAW"main/bd/dvlink.sql -O /tmp/dvlink.sql"
+wget $RAW2
 mysql -h localhost -u root -p@^@^@^@^ hblink < /tmp/dvlink.sql
 sleep 5
 }
@@ -324,20 +327,25 @@ apt install -y lighttpd
 cd /opt
 GIT2=$GIT"dmr_utils3.git"
 git clone $GIT2
-apt-get install python3-pip -y
-pip3 install --upgrade .
-pip install -r /opt/hblink3/requirements.txt
-/usr/bin/python3 -m pip install --upgrade pip
+#apt-get install python3-pip -y
+#pip3 install --upgrade .
+#pip install -r /opt/hblink3/requirements.txt
+#/usr/bin/python3 -m pip install --upgrade pip
 #instala hblink
 GIT2=$GIT"hblink3.git"
 cd /opt
 git clone $GIT2
+apt-get install python3-pip -y
+pip3 install --upgrade .
+pip install -r /opt/hblink3/requirements.txt
+/usr/bin/python3 -m pip install --upgrade pip
 chmod +x /opt/hblink3/install.sh
 /opt/hblink3/install.sh
 #instala hbmonitor
 cd /opt
 GIT2=$GIT"HBmonitor.git hbmonitor"
 git clone $GIT2
+
 chmod +x /opt/hbmonitor/install.sh
 /opt/hbmonitor/install.sh
 wget https://database.radioid.net/static/rptrs.json -O /opt/hbmonitor/peer_ids.json
@@ -671,12 +679,12 @@ fi
 #tar xvf /dev/carpetoncio -C /dev/
 #clear
 ESTADO
-    if [[ $VPS = "SI/YES" ]]
+   if [[ $VPS = "SI/YES" ]]
    then
       dialog --title "Easy DVLink" --msgbox "Ha seleccionado instalacionen VPS. Se usara IP publica" 0 0
    fi
    if dialog --title "Instalacion VPS"  --yesno "Va a comenzar la instalacion de EASY-DVLINK. Esta seguro?" 0 0 ;then
-     
+
      INSTALA-SOFTWARE
 
      #if [[ $DV == "SI/YES" ]]
@@ -692,16 +700,16 @@ ESTADO
      #    COPIAR_RESTO_DE_ARCHIVOS
      #    COMPILADOS
      # fi
-
+    fi
       if [[ $TTYD == "SI/YES" ]]
       then
          INSTALA-TTYD
       fi
       if [[ $HB == "SI/YES" ]]
       then
-         if [[ $DV == "NO" ]] && [[ $HOT == "NO" ]]
-         then
-          echo "entra en el if de solo hblink"
+   #      if [[ $DV == "NO" ]] && [[ $HOT == "NO" ]]
+   #      then
+   #       echo "entra en el if de solo hblink"
           #INSTALA-SOFTWARE
           #COPIALOSSCRIPTSASUSITIO
           #COPIAR_DE_GITHUB
@@ -711,17 +719,18 @@ ESTADO
           #COPIAR_RESTO_DE_ARCHIVOS
           #COMPILADOS
           HBLINK
-        else
-          HBLINK
-        fi
       fi
+     # else
+     #     HBLINK
+     #  fi
+     #fi
 
        if [[ $HOT == "SI/YES" ]]
        then
         echo ""
-        if [[ $DV == "NO" ]] && [[ $HB == "NO" ]]
-        then
-          echo "entra en el if de solo hotspots"
+      #  if [[ $DV == "NO" ]] && [[ $HB == "NO" ]]
+      #  then
+      #    echo "entra en el if de solo hotspots"
           #INSTALA-SOFTWARE
           #COPIALOSSCRIPTSASUSITIO
           #COPIAR_DE_GITHUB
@@ -732,33 +741,34 @@ ESTADO
           #COMPILADOS
           INSTALA_HOTSPOTS
           distribucion=$(uname -m)
-          if [ $distribucion == "armv6l" ]
-          then
-             ARM
-             dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
-          fi
-          if [ $distribucion == "armv7l" ]
-          then
-             ARM
-             dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
-          fi
-       else
-	  INSTALA_HOTSPOTS
-          if [ $distribucion == "armv6l" ]
-          then
-             ARM
-             dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
-          fi
-          if [ $distribucion == "armv7l" ]
-          then
-             ARM
-             dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
-          fi
-        fi
-      fi
+     fi 
+     #    if [ $distribucion == "armv6l" ]
+      #    then
+      #       ARM
+      #       dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
+      #    fi
+      #    if [ $distribucion == "armv7l" ]
+      #    then
+      #       ARM
+      #       dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
+      #    fi
+      # else
+      #	  INSTALA_HOTSPOTS
+      #    if [ $distribucion == "armv6l" ]
+      #    then
+      #       ARM
+      #       dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
+      #    fi
+      #    if [ $distribucion == "armv7l" ]
+      #    then
+      #       ARM
+      #       dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
+      #    fi
+      #  fi
+     #fi
 
-  fi
-fi
+# fi
+#fi
 rm -r /dev/shmz > /dev/null 2>&1
 distribucion=$(uname -m)
 if [[ $distribucion == "x86_64" ]]
