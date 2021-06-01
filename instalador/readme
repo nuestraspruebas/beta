@@ -3,7 +3,7 @@
 
 
 2. EasyDVLink necesita tener instalado en el sistema el software dialog.  En caso de no encontrarlo intentara hacerlo por usted.
-En caso de que no pueda realizarlo, por favor, instentelo manualmente.
+En caso de que no pueda realizarlo, por favor, intentelo manualmente.
 
 __________________________________________________________________________________________________________________________________
 
@@ -11,7 +11,7 @@ ________________________________________________________________________________
 In case you can't do it, please install it manually.
 
 
-sudo apt install dialog
+apt install dialog
 
 
 
