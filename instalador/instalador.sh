@@ -628,6 +628,7 @@ mv /etc/scripts/beta/hosts /etc/scripts/
 mv /etc/scripts/beta/menus /etc/scripts/
 cp /etc/scripts/beta/bin/surecpass /usr/bin/recpass
 cp /etc/scripts/beta/bin/menu /usr/bin/menu
+cp /etc/scripts/beta/bin/sslb /etc/sslb
 chmod +x /usr/bin/recpass
 chmod +x /usr/bin/menu
 rm -r /etc/scripts/beta
