@@ -621,7 +621,6 @@ function INSTALA_DVLINK(){
 mkdir /etc/scripts
 cd /etc/scripts
 git clone https://github.com/nuestraspruebas/beta.git
-read -t 5 -p
 cp /etc/scripts/beta/scripts/* /etc/scripts
 chmod +x /etc/scripts/*
 cp /etc/scripts/beta/idiomas/* /usr/bin/
@@ -639,13 +638,12 @@ rm -r /etc/scripts/beta
 ESTADO
    if [[ $DVLINK = "SI/YES" ]]
    then
-     INSTALA_DVLINK
      INSTALA-SOFTWARE
      INSTALA-MYSQL
      RECUPERA-BD
      MODIFICAR_MARIADB
      INSTALA-TTYD
-
+     INSTALA_DVLINK
     fi
     if [[ $DV = "SI/YES" ]]
     then
