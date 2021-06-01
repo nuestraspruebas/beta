@@ -150,6 +150,7 @@ dialog --title "" --textbox /tmp/disclaimer 0 0
 rm -f /tmp/disclaimer > /dev/null 2>&1
 if dialog --title " Iniciamos la instalacion / we started the installation"  --yesno "Esta seguro / Are you sure" 0 0 ;then
 #https://raw.githubusercontent.com/nuestraspruebas/beta/main/instalador/instalador.sh
+    rm -f /tmp/instalador.sh > /dev/null 2>&1
     ruta=$GIT"main/instalador/instalador.sh"
     wget -P /tmp/ $ruta
     #wget -P /tmp/ https://raw.githubusercontent.com/nuestraspruebas/beta/main/instalador/instalador.sh  > /dev/null 2>&1

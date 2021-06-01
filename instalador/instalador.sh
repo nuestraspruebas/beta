@@ -425,15 +425,15 @@ echo 'YSF OK :'
 cd /opt
 GIT2=$GIT"NXDNClients.git"ç
 git clone $GIT2
-cd /opt/NXDNClients/NXDNGateway/
-sed -i "22s/.*/$ver/" /opt/NXDNClients/NXDNGateway/Version.h
+cd /opt/hotspot/NXDNClients/NXDNGateway/
+sed -i "22s/.*/$ver/" /opt/hotspot/NXDNClients/NXDNGateway/Version.h
 make
 systemctl daemon-reload
 systemctl enable p25gateway.service
 echo 'NXDN OK :'
 
 ####  MMDVMHOST 
-mkdir /opt/hotspot
+#mkdir /opt/hotspot
 cd /opt/hotspot/
 GIT2=$GIT"MMDVMHost.git"
 git clone $GIT2
