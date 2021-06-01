@@ -622,10 +622,14 @@ mkdir /etc/scripts
 cd /etc/scripts
 git clone https://github.com/nuestraspruebas/beta.git
 cp /etc/scripts/beta/scripts/* /etc/scripts
+chmod +x /etc/scripts/*
 cp /etc/scripts/beta/idiomas/* /usr/bin/
 mv /etc/scripts/beta/hosts /etc/scripts/
 mv /etc/scripts/beta/menus /etc/scripts/
 cp /etc/scripts/beta/bin/surecpass /usr/bin/recpass
+cp /etc/scripts/beta/bin/menu /usr/bin/menu
+chmod +x /usr/bin/recpass
+chmod +x /usr/bin/menu
 rm -r /etc/scripts/beta
 }
 
