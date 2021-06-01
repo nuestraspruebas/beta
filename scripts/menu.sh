@@ -1597,9 +1597,8 @@ then
     CONTRASEÑA-RECPASS
 else
     CONTROL-ACCESO
-echo "congelado vale $CONGELADO"
     if [[ $CONGELADO -eq 0 ]]; then
-#        COMPRUEBA-MYSQL
+        COMPRUEBA-MYSQL
         MENU-PRINCIPAL-DESCONGELADO
     else
         MENU-DESCONGELAR
