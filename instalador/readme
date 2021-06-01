@@ -1,13 +1,17 @@
 
+EasyDVLinkINSTALL.sh es el configurador del instalador / EasyDVLinkINSTALL.sh is the installer configurator.
+
+
 1.  chmox +x EasyDVLinkINSTALL.sh
+2.  ./EasyDVLinkINSTALL.sh
 
 
-2. EasyDVLink necesita tener instalado en el sistema el software dialog.  En caso de no encontrarlo intentara hacerlo por usted.
+- EasyDVLink necesita tener instalado en el sistema el software dialog.  En caso de no encontrarlo intentara hacerlo por usted.
 En caso de que no pueda realizarlo, por favor, intentelo manualmente.
 
 __________________________________________________________________________________________________________________________________
 
-2. Starter needs to have the dialog software installed on the system. In case of not finding it, it will try to do it for you.
+- Starter needs to have the dialog software installed on the system. In case of not finding it, it will try to do it for you.
 In case you can't do it, please install it manually.
 
 
@@ -15,6 +19,4 @@ apt install dialog
 
 
 
-3. EasyDVLinkINSTALL.sh es el configurador del instalador.
-________________________________________________
-3. EasyDVLinkINSTALL.sh is the installer configurator.
+
