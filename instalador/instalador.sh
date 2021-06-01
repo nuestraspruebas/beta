@@ -1,8 +1,11 @@
 #!/bin/bash
 
-################# version 1.0 17/10/2020 #########################
-#    Instalador Easy DVLNK VPS by Jose Antonio Baños  EA7JCL
+################# version 1.0 01/06/2021 #########################
+#               Instalador Easy DVLNK VPS by                     # 
+#                Jose Antonio Baños  EA7JCL                      #
+#               Joaquin Madrid Belando EA5GVK                    #
 ##################################################################
+
 export NCURSES_NO_UTF8_ACS=1
 EASY_CONF_FILE="/tmp/Easy_Conf_File"
 CONF_FILE="/etc/scripts/Conf_File"
