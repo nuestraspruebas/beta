@@ -23,9 +23,9 @@ HOT=$(awk 'NR==4' $EASY_CONF_FILE)
 PATHDB="/etc/mysql/mariadb.conf.d/50-server.cnf"
 PATHTTYD="/etc/systemd/system/ttydconfig.service"
 DIA=`date +%d`
-MES=`date +%m`
-AÑO=`date +%Y`
-fecha="$AÑO$MES$DIA_Easy_DVLink"
+sMES=`date +%m`
+ANO=`date +%Y`
+fecha="$ANO$MES$DIA_Easy_DVLink"
 c="const char* VERSION = "
 d='"'
 ver="$c$d$fecha$d;"
