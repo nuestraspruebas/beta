@@ -8,7 +8,7 @@
 
 export NCURSES_NO_UTF8_ACS=1
 EASY_CONF_FILE="/tmp/Easy_Conf_File"
-CONF_FILE="/etc/scripts/Conf_File"
+CONF_FILE="/etc/Easy_Conf_File"
 GIT="https://github.com/nuestraspruebas/"
 RAW="https://raw.githubusercontent.com/nuestraspruebas/beta/"
 #/etc/systemd/system.conf:
@@ -16,7 +16,6 @@ RAW="https://raw.githubusercontent.com/nuestraspruebas/beta/"
 #DefaultTimeoutStopSec=90s
 ##  obtiene la informacion sobre lo que queremos instalar
 DVLINK=$(awk 'NR==1' $EASY_CONF_FILE)
-#TTYD=$(awk 'NR==2' $EASY_CONF_FILE)
 DV=$(awk 'NR==2' $EASY_CONF_FILE)
 HB=$(awk 'NR==3' $EASY_CONF_FILE)
 HOT=$(awk 'NR==4' $EASY_CONF_FILE)
