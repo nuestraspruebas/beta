@@ -1,8 +1,8 @@
 
-1.  chmox +x arrancador.sh
+1.  chmox +x EasyDVLinkINSTALL.sh
 
 
-2. Arrancador necesita tener instalado en el sistema el software dialog.  En caso de no encontrarlo intentara hacerlo por usted.
+2. EasyDVLink necesita tener instalado en el sistema el software dialog.  En caso de no encontrarlo intentara hacerlo por usted.
 En caso de que no pueda realizarlo, por favor, instalelo manualmente.
 
 __________________________________________________________________________________________________________________________________
@@ -15,6 +15,6 @@ sudo apt install dialog
 
 
 
-3. Arrancador.sh es el configurador del instalador.
+3. EasyDVLinkINSTALL.sh es el configurador del instalador.
 ________________________________________________
-3. Starter.sh is the installer configurator.
+3. EasyDVLinkINSTALL.sh is the installer configurator.
