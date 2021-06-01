@@ -636,7 +636,7 @@ rm -r /etc/scripts/beta
 
 #######  INICIO INSTALADOR  #########
 ESTADO
-   if [[ $DV = "SI/YES" ]]
+   if [[ $DVLINK = "SI/YES" ]]
    then
      INSTALA_DVLINK
      INSTALA-SOFTWARE
@@ -646,6 +646,12 @@ ESTADO
      INSTALA-TTYD
 
     fi
+    if [[ $DV = "SI/YES" ]]
+    then
+      INSTALA-SOFTWARE
+      INSTALA-DVSWITCH
+    fi
+
     if [[ $HB == "SI/YES" ]]
     then
         INSTALA-SOFTWARE
