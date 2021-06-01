@@ -37,4 +37,7 @@ PATHDVLINK=$(awk 'NR==12' /etc/sslb)
 CONTINUARINSTALACION=$(awk 'NR==16' /etc/sslb)
 
 
+DVSWITCH=$(awk 'NR==8' /etc/sslb)
+HBLINK=$(awk 'NR==9' /etc/sslb)
+HOTSPOT=$(awk 'NR==10' /etc/sslb)
 
