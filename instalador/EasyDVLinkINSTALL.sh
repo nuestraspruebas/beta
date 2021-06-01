@@ -53,20 +53,20 @@ then
 fi
 if [ -f $EASY_CONF_FILE ];
 then
-VPS=$(awk 'NR==1' $EASY_CONF_FILE)
-TTYD=$(awk 'NR==2' $EASY_CONF_FILE)
-DVSWITCH=$(awk 'NR==3' $EASY_CONF_FILE)
-HBLINK=$(awk 'NR==4' $EASY_CONF_FILE)
-HOTSPOT=$(awk 'NR==5' $EASY_CONF_FILE)
+#VPS=$(awk 'NR==1' $EASY_CONF_FILE)
+DVLINK=$(awk 'NR==1' $EASY_CONF_FILE)
+DVSWITCH=$(awk 'NR==2' $EASY_CONF_FILE)
+HBLINK=$(awk 'NR==3' $EASY_CONF_FILE)
+HOTSPOT=$(awk 'NR==4' $EASY_CONF_FILE)
 else
-VPS="NO"
-TTYD="NO"
+#VPS="NO"
+DVLINK="NO"
 DVSWITCH="NO"
 HBLINK="NO"
 HOTSPOT="NO"
 cat <<EOF >> $EASY_CONF_FILE
-$VPS
-$TTYD
+#$VPS
+$DVLINK
 $DVSWITCH
 $HBLINK
 $HOTSPOT
@@ -81,9 +81,8 @@ while [ "$menuconfigura" != "Volver / Back" ]; do
    trap "rm -f $tempfile" 0 1 2 5 15
    $DIALOG --clear --title "Easy DVLink" \
    --menu "" 0 0 0 \
-     "Se instalara en un VPS / It will be installed on a VPS"  "$VPS" \
      "───────────────────────────────────────────────────────────────" "" \
-     "Instalar configurador Web / Install web configurator" "$TTYD" \
+     "Instalar DVLink Easy / Install DVLink Easy" "$DVLINK" \
      "───────────────────────────────────────────────────────────────" "" \
      "Instalar DVSWITCH / Install DVSWITCH" "$DVSWITCH" \
      "───────────────────────────────────────────────────────────────" "" \
@@ -97,24 +96,14 @@ retval=$?
 menuconfigura=`cat $tempfile`
 
 
-if [[ $menuconfigura == "Se instalara en un VPS / It will be installed on a VPS" ]]
-then
-    if [[ $VPS == "NO" ]]
+    if  [[ $menuconfigura = "Instalar DVLink Easy / Install DVLink Easy" ]]
     then
-       VPS="SI/YES"
-       sed -i "1s#.*#SI/YES#" $EASY_CONF_FILE
-    else
-       VPS="NO"
-       sed -i "1s#.*#NO#" $EASY_CONF_FILE
-    fi
-    else if  [[ $menuconfigura = "Instalar configurador Web / Install web configurator" ]]
-    then
-        if [[ $TTYD == "NO" ]]
+        if [[ $DVLINK == "NO" ]]
         then
-            TTYD="SI/YES"
+            DVLINK="SI/YES"
             sed -i "2s#.*#SI/YES#" $EASY_CONF_FILE
         else
-            TTYD="NO"
+            DVLINK="NO"
             sed -i "2s#.*#NO#" $EASY_CONF_FILE
         fi
         else if [[ $menuconfigura == "Instalar DVSWITCH / Install DVSWITCH" ]]
@@ -151,7 +140,7 @@ then
            fi
        fi
     fi
-fi
+
 done
 }
 function INSTALAR (){

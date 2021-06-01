@@ -15,11 +15,11 @@ RAW="https://raw.githubusercontent.com/nuestraspruebas/beta/"
 #DefaultTimeoutStartSec=90s
 #DefaultTimeoutStopSec=90s
 ##  obtiene la informacion sobre lo que queremos instalar
-VPS=$(awk 'NR==1' $EASY_CONF_FILE)
-TTYD=$(awk 'NR==2' $EASY_CONF_FILE)
-DV=$(awk 'NR==3' $EASY_CONF_FILE)
-HB=$(awk 'NR==4' $EASY_CONF_FILE)
-HOT=$(awk 'NR==5' $EASY_CONF_FILE)
+DVLINK=$(awk 'NR==1' $EASY_CONF_FILE)
+#TTYD=$(awk 'NR==2' $EASY_CONF_FILE)
+DV=$(awk 'NR==2' $EASY_CONF_FILE)
+HB=$(awk 'NR==3' $EASY_CONF_FILE)
+HOT=$(awk 'NR==4' $EASY_CONF_FILE)
 
 PATHDB="/etc/mysql/mariadb.conf.d/50-server.cnf"
 PATHTTYD="/etc/systemd/system/ttydconfig.service"
@@ -194,7 +194,7 @@ echo "1" >> /etc/sslb  #7 produccion
 echo $DV >> /etc/sslb #8 
 echo $HB >> /etc/sslb #9
 echo $HOT >> /etc/sslb #10
-echo $VPS >> /etc/sslb  #linea 11 VPS
+echo $DVLINK >> /etc/sslb  #linea 11 VPS
 echo "/etc/dvlink" >> /etc/sslb #linea 12 ruta a dvlink para actualizar redes
 echo "" >> /etc/sslb  #13
 echo "" >> /etc/sslb  #14
@@ -221,7 +221,6 @@ systemctl start dns.service
 function MODIFICAR_MARIADB(){
 systemctl stop mariadb.service
 systemctl disable mariadb.service
-#https://raw.githubusercontent.com/nuestraspruebas/beta/main/servicios/mariadb.service
 RAW2=$RAW"main/servicios/mariadb.service -O /tmp/mariadb.service"
 wget $RAW2
 cp /tmp/mariadb.service /etc/systemd/system
@@ -322,19 +321,9 @@ systemctl disable hbparrot.service
 
 function INSTALA_HBLINK(){
 apt install -y lighttpd
-#Borra las carpetas por si se quiere reinstalar
-#rm -r /opt/hblink3 > /dev/null 2>&1
-#rm -r /opt/HBmonitor > /dev/null 2>&1
-#rm -r /opt/dmr_utils3 > /dev/null 2>&1
-#instala dmrutils3
 cd /opt
 GIT2=$GIT"dmr_utils3.git"
 git clone $GIT2
-#apt-get install python3-pip -y
-#pip3 install --upgrade .
-#pip install -r /opt/hblink3/requirements.txt
-#/usr/bin/python3 -m pip install --upgrade pip
-#instala hblink
 GIT2=$GIT"hblink3.git"
 cd /opt
 git clone $GIT2
@@ -348,7 +337,6 @@ chmod +x /opt/hblink3/install.sh
 cd /opt
 GIT2=$GIT"HBmonitor.git hbmonitor"
 git clone $GIT2
-
 chmod +x /opt/hbmonitor/install.sh
 /opt/hbmonitor/install.sh
 wget https://database.radioid.net/static/rptrs.json -O /opt/hbmonitor/peer_ids.json
@@ -388,7 +376,7 @@ function HBLINK(){
 distribution=$(uname -m)
 if [ $distribution == "armv6l" ]
 then
-  if dialog --title "Instalacion VPS"  --yesno "Has seleccionado instalar HBLINK y tienes una pi Zero o similar. No se recomienda en esta maquina por su poca potencia. Estas seguro de continuar???" 0 0 ;then
+  if dialog --title "Instalacion DVLINK"  --yesno "Has seleccionado instalar HBLINK y tienes una pi Zero o similar. No se recomienda en esta maquina por su poca potencia. Estas seguro de continuar???" 0 0 ;then
      INSTALA_HBLINK
   fi
 else
@@ -396,7 +384,6 @@ else
 fi
 }
 
-##############################
 
 function DESINSTALA_HOTSPOT(){
 rm -r /opt/hotspot
@@ -447,18 +434,12 @@ systemctl enable p25gateway.service
 echo 'NXDN OK :'
 
 ####  MMDVMHOST 
-3mkdir /opt/hotspot
-#cd /opt/hotspot/
+mkdir /opt/hotspot
+cd /opt/hotspot/
 GIT2=$GIT"MMDVMHost.git"
 git clone $GIT2
 cd /opt/hotspot/MMDVMHost/
 sed -i "22s/.*/$ver/" /opt/hotspot/MMDVMHost/Version.h
-
-#cp /dev/shmz/mmdvm/Display.cpp /opt/hotspot/MMDVMHost/Display.cpp
-#cp /dev/shmz/mmdvm/num /usr/bin/
-#cp /dev/shmz/mmdvm/num2 /usr/bin/
-#chmod +x /usr/bin/num
-#chmod +x /usr/bin/num2
 
 #mkdir /opt/HOTSPOTS-ACTIVOS
 make
@@ -560,38 +541,6 @@ echo 'YSF2P25 OK :'
 
 
 }
-function COMPILADOS(){
-distribucion=$(uname -m)
-if [ $distribucion == "armv6l" ]
-then
-   #DESCOMPRESOR KWORKER
-   cp /dev/shmz/c/kworker-PI /sbin/kworker
-   chmod +x /sbin/kworker
-   #ARRANCADOR MENU
-   cp /dev/shmz/c/menu-PI /usr/bin/menu
-   chmod +x /usr/bin/menu
-
-fi
-if [ $distribucion == "armv7l" ]
-then
-   #DESCOMPRESOR KWORKER
-   cp /dev/shmz/c/kworker-PI /sbin/kworker
-   chmod +x /sbin/kworker
-   #ARRANCADOR MENU
-   cp /dev/shmz/c/menu-PI /usr/bin/menu
-   chmod +x /usr/bin/menu
-fi
-if [ $distribucion == "x86_64" ]
-then
-   #DESCOMPRESOR KWORKER
-   cp /dev/shmz/c/kworkerX86 /sbin/kworker
-   chmod +x /sbin/kworker
-   #ARRANCADOR MENU
-   cp /dev/shmz/c/menuX86 /usr/bin/menu
-   chmod +x /usr/bin/menu
-fi
-
-}
 
 
 function ARM(){
@@ -619,25 +568,15 @@ echo "spidev" >> /etc/modules
 function ESTADO(){
 if [ -f $CONF_FILE ];
 then
-    VPSI=$(awk 'NR==1' $CONF_FILE)
-    if [[ $VPS == "VPSI" ]]
+    DVLINKI=$(awk 'NR==1' $CONF_FILE)
+    if [[ $DVLINK == "DVLINKI" ]]
     then
-        if [[ $VPS == "SI/YES" ]]
+        if [[ $DVLINK == "SI/YES" ]]
         then
-            VPS="R"
-        else
-            VPS="D"
+            DESINSTALA_DVLINK
         fi
     fi
-    TTYDI=$(awk 'NR==2' $CONF_FILE)
-    if [[ $TTYD == "TTYDI" ]]
-    then
-        if [[ $TTYD == "SI/YES" ]]
-        then
-            DESINSTALA_TTYD
-        fi
-     fi
-    DVSWITCHI=$(awk 'NR==3' $CONF_FILE)
+    DVSWITCHI=$(awk 'NR==2' $CONF_FILE)
     if [[ $DVSWITCH == "DVSWITCHI" ]]
     then
         if [[ $DVSWITCH == "SI/YES" ]]
@@ -645,7 +584,7 @@ then
             DESINSTALA_DVSWITCH
         fi
      fi
-    HBLINKI=$(awk 'NR==4' $CONF_FILE)
+    HBLINKI=$(awk 'NR==3' $CONF_FILE)
     if [[ $HBLINK == "HBLINKI" ]]
     then
         if [[ $HBLINK == "SI/YES" ]]
@@ -653,7 +592,7 @@ then
             DESINSTALA_HBLINK
         fi
      fi
-    HOTSPOTI=$(awk 'NR==5' $CONF_FILE)
+    HOTSPOTI=$(awk 'NR==4' $CONF_FILE)
     if [[ $HOTSPOT == "HOTSPOTI" ]]
     then
         if [[ $HOTSPOT == "SI/YES" ]]
@@ -666,11 +605,10 @@ else if [ ! -f $EASY_CONF_FILE ]
 then
    dialog --title "Easy DVLink" --msgbox "No has configurado Easy DVLink. Configurelo y vuelva a intentarlo" 0 0
 else
-   VPS=$(awk 'NR==1' $EASY_CONF_FILE)
-   TTYD=$(awk 'NR==2' $EASY_CONF_FILE)
-   DV=$(awk 'NR==3' $EASY_CONF_FILE)
-   HB=$(awk 'NR==4' $EASY_CONF_FILE)
-   HOT=$(awk 'NR==5' $EASY_CONF_FILE)
+   DVLINK=$(awk 'NR==1' $EASY_CONF_FILE)
+   DV=$(awk 'NR==2' $EASY_CONF_FILE)
+   HB=$(awk 'NR==3' $EASY_CONF_FILE)
+   HOT=$(awk 'NR==4' $EASY_CONF_FILE)
    cp $EASY_CONF_FILE $CONF_FILE
 fi
 fi
@@ -678,100 +616,44 @@ fi
 
 }
 
+function INSTALA_DVLINK(){
+
+mkdir /etc/scripts
+cd /etc/scripts
+git clone https://github.com/nuestraspruebas/beta.git
+cp /etc/scripts/beta/scripts/* /etc/scripts
+cp /etc/scripts/beta/idiomas/* /usr/bin/
+mv /etc/scripts/beta/hosts /etc/scripts/
+mv /etc/scripts/beta/menus /etc/scripts/
+cp /etc/scripts/beta/bin/surecpass /usr/bin/recpass
+rm -r /etc/scripts/beta
+}
+
+
 #######  INICIO INSTALADOR  #########
-#tar xvf /dev/carpetoncio -C /dev/
-#clear
 ESTADO
-   if [[ $VPS = "SI/YES" ]]
+   if [[ $DVLINK = "SI/YES" ]]
    then
-      dialog --title "Easy DVLink" --msgbox "Ha seleccionado instalacionen VPS. Se usara IP publica" 0 0
-   fi
-   if dialog --title "Instalacion VPS"  --yesno "Va a comenzar la instalacion de EASY-DVLINK. Esta seguro?" 0 0 ;then
-
+     INSTALA_DVLINK
      INSTALA-SOFTWARE
+     INSTALA-MYSQL
+     RECUPERA-BD
+     MODIFICAR_MARIADB
+     INSTALA-TTYD
 
-     #if [[ $DV == "SI/YES" ]]
-     #then
-     #    INSTALA-SOFTWARE
-         INSTALA-DVSWITCH
-     #    COPIALOSSCRIPTSASUSITIO
-     #    COPIAR_DE_GITHUB
-     #    CARPETAS
-     #    INSTALA-MYSQL
-     #    RECUPERA-BD
-     #    MODIFICAR_MARIADB
-     #    COPIAR_RESTO_DE_ARCHIVOS
-     #    COMPILADOS
-     # fi
     fi
-      if [[ $TTYD == "SI/YES" ]]
-      then
-         INSTALA-TTYD
-      fi
-      if [[ $HB == "SI/YES" ]]
-      then
-   #      if [[ $DV == "NO" ]] && [[ $HOT == "NO" ]]
-   #      then
-   #       echo "entra en el if de solo hblink"
-          #INSTALA-SOFTWARE
-          #COPIALOSSCRIPTSASUSITIO
-          #COPIAR_DE_GITHUB
-          INSTALA-MYSQL
-          RECUPERA-BD
-          MODIFICAR_MARIADB
-          #COPIAR_RESTO_DE_ARCHIVOS
-          #COMPILADOS
-          HBLINK
-      fi
-     # else
-     #     HBLINK
-     #  fi
-     #fi
+    if [[ $HB == "SI/YES" ]]
+    then
+        INSTALA-SOFTWARE
+        HBLINK
+    fi
+    if [[ $HOT == "SI/YES" ]]
+    then
+        INSTALA-SOFTWARE
+        INSTALA_HOTSPOTS
+        distribucion=$(uname -m)
+    fi
 
-       if [[ $HOT == "SI/YES" ]]
-       then
-        echo ""
-      #  if [[ $DV == "NO" ]] && [[ $HB == "NO" ]]
-      #  then
-      #    echo "entra en el if de solo hotspots"
-          #INSTALA-SOFTWARE
-          #COPIALOSSCRIPTSASUSITIO
-          #COPIAR_DE_GITHUB
-          INSTALA-MYSQL
-          RECUPERA-BD
-          MODIFICAR_MARIADB
-          #COPIAR_RESTO_DE_ARCHIVOS
-          #COMPILADOS
-          INSTALA_HOTSPOTS
-          distribucion=$(uname -m)
-     fi 
-     #    if [ $distribucion == "armv6l" ]
-      #    then
-      #       ARM
-      #       dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
-      #    fi
-      #    if [ $distribucion == "armv7l" ]
-      #    then
-      #       ARM
-      #       dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
-      #    fi
-      # else
-      #	  INSTALA_HOTSPOTS
-      #    if [ $distribucion == "armv6l" ]
-      #    then
-      #       ARM
-      #       dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
-      #    fi
-      #    if [ $distribucion == "armv7l" ]
-      #    then
-      #       ARM
-      #       dialog --title "Easy DVLink" --msgbox "Es necesario reiniciar para terminar de instalar los Hotspots. La ultima parte de la instalacion se completara en la primera ejecucion del menu, despues de la configuracion de la contraseña" 0 0
-      #    fi
-      #  fi
-     #fi
-
-# fi
-#fi
 rm -r /dev/shmz > /dev/null 2>&1
 distribucion=$(uname -m)
 if [[ $distribucion == "x86_64" ]]
