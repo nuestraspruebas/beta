@@ -621,6 +621,7 @@ function INSTALA_DVLINK(){
 mkdir /etc/scripts
 cd /etc/scripts
 git clone https://github.com/nuestraspruebas/beta.git
+read -t 5 -p
 cp /etc/scripts/beta/scripts/* /etc/scripts
 chmod +x /etc/scripts/*
 cp /etc/scripts/beta/idiomas/* /usr/bin/
